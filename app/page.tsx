@@ -583,9 +583,6 @@ export default function Home() {
                 Create Your Life Map
                 <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition" />
               </button>
-              <p className="text-sm text-gray-500 mt-4">
-                No credit card required • Cancel anytime
-              </p>
             </div>
           </section>
           {/* Footer */}
