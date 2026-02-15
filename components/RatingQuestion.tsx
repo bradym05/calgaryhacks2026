@@ -6,6 +6,8 @@ import type { QuestionProps } from "@/types/questions"
 const RatingQuestion = ({question, response, setResponse}: QuestionProps) => {
   const [sliderValue, setSliderValue] = useState(5);
 
+  setResponse(sliderValue.toString());
+
   const handleSliderChange = (e : React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value);
     setSliderValue(newValue);
@@ -27,7 +29,7 @@ const RatingQuestion = ({question, response, setResponse}: QuestionProps) => {
             id="slider"
             min="1"
             max="10"
-            value={sliderValue}
+            value={response}
             onChange={handleSliderChange}
             className="rating-slider mx-auto w-11/12 h-4 md:h-5 bg-gray-200 rounded-full appearance-none cursor-pointer accent-[#8aa66e]"
             style={{

@@ -21,7 +21,7 @@ export default function BooleanQuestion({question, response, setResponse}: Quest
 
                 <button
                     type="button"
-                    className={`rounded-lg px-4 py-2 text-sm font-semibold ${response === "true" ? "bg-gray-900 text-white hover:bg-gray-800" : "bg-white border border-gray-300 hover:bg-gray-50"} focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2`}
+                    className={`rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${response === "true" ? "bg-gray-900 text-white hover:bg-gray-800" : "bg-white"}`}
                     onClick={() => setResponse("true")}
                 >
                     Yes

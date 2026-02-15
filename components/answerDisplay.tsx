@@ -122,7 +122,7 @@ export default function AnswerDisplay({ questionId }: AnswerDisplayProps) {
                     {items.map((it, idx) => (
                       <div key={idx} className="p-3 bg-white border border-gray-200 rounded-xl shadow-sm">
                         <div className="text-sm text-gray-800">{it.text}</div>
-                        <div className="text-xs text-gray-400 mt-2">{it.time} • {new Date(it.date).toLocaleString()}</div>
+                        <div className="text-xs text-gray-400 mt-2">{new Date(it.date).toLocaleString(undefined, {dateStyle: "short"})}</div>
                       </div>
                     ))}
                   </div>

@@ -12,9 +12,9 @@ import questions from "../../services/questions.json";
 import FreeFormQuestion from "../../components/FreeFormQuestion";
 import BooleanQuestion from "../../components/BooleanQuestion";
 import AnswerDisplay from "../../components/answerDisplay";
-import InsightModal from "../../components/InsightModal";
 import { fetchAnsweredCount } from "../../services/getAnsweredCount";
 import { addResponseToQuestion } from "@/services/addNewAnswer";
+import InsightModal from "@/components/InsightModal";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useAuth } from "@/services/AuthContext";
@@ -140,6 +140,7 @@ export default function QuestionPage({ params }: PageProps) {
             onClick={() => {
               setOpenedFromBack(true);
               setShowInsights(true);
+              router.push("/");
             }}
             className="inline-flex items-center gap-2 px-4 py-2 cursor-pointer rounded-xl bg-white/80 backdrop-blur-sm border border-[#d4e4c8]/60 text-gray-700 hover:bg-white hover:border-[#8aa66e]/50 transition-all duration-200 shadow-sm hover:shadow group"
           >
@@ -177,14 +178,6 @@ export default function QuestionPage({ params }: PageProps) {
               </div>
             )} */}
 
-            <InsightModal
-              questionId={questionId || "default"}
-              open={showInsights}
-              onClose={() => {
-                setShowInsights(false);
-                if (openedFromBack) router.push("/");
-              }}
-            />
           </div>
 
           <section className="rounded-2xl md:rounded-3xl border border-[#d4e4c8]/60 bg-white/80 backdrop-blur-sm shadow-xl shadow-[#c4d9a8]/25 p-7 md:p-10">
