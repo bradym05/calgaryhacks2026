@@ -30,7 +30,7 @@ export default function Home() {
       const randomIndex = Math.floor(Math.random() * questionKeys.length);
       const randomKey = questionKeys[randomIndex];
       // 2. Navigate to /[id].tsx (e.g., /101)
-      router.push(`/question/${randomKey}`);
+      router.push(`/question/${101}`);
     } else {
       signInWithGoogle();
     }
