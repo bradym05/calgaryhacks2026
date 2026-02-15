@@ -11,7 +11,8 @@ import RatingQuestion from "@/components/RatingQuestion";
 import questions from "@/services/questions.json";
 import FreeFormQuestion from "@/components/FreeFormQuestion";
 import BooleanQuestion from "@/components/BooleanQuestion";
-
+import AnswerDisplay from "@/components/answerDisplay";
+import { addResponseToQuestion } from "@/services/addNewAnswer";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -43,13 +44,26 @@ export default function QuestionPage({ params }: PageProps) {
   }, [router.isReady]);
 
   // Handle submission
-  function onSubmit(e: SubmitEvent) {
+  async function onSubmit(e: SubmitEvent) {
     // Don't refresh
     e.preventDefault()
     // Update state
     setSubmitting(true)
     // Validate response
-    if (response.length > 0) {
+    if (response.trim().length > 0) {
+      // Add response to database
+      setSubmitting(true);
+      try{
+        await addResponseToQuestion("user1", questionId || "default", response.trim());
+        setResponse("");
+        // Navigate to next question
+        const nextId = Number(questionId) + 1;
+        router.push(nextId.toString());
+      }catch(error){
+        console.error("Error submitting response: ", error);
+      }finally{
+        setSubmitting(false);
+      }
     }
   }
 
@@ -70,6 +84,8 @@ export default function QuestionPage({ params }: PageProps) {
               Take your time • Be honest with yourself
             </p>
           </header>
+              <AnswerDisplay questionId={questionId || "default"} />
+
 
           <section className="rounded-2xl md:rounded-3xl border border-[#d4e4c8]/60 bg-white/80 backdrop-blur-sm shadow-xl shadow-[#c4d9a8]/25 p-7 md:p-10">
             <form onSubmit={onSubmit}>
@@ -103,6 +119,7 @@ export default function QuestionPage({ params }: PageProps) {
                 <button
                   type="button"
                   className="w-full sm:w-auto px-7 py-3 rounded-xl border border-gray-300 bg-white/90 text-gray-700 font-medium hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+                  // onClick = {()=>router.push("question/" + (Number(questionId) + 1).toString())}
                 >
                   Skip for now
                 </button>
@@ -111,6 +128,7 @@ export default function QuestionPage({ params }: PageProps) {
                 <button
                   type="submit"
                   className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white font-semibold shadow-md hover:shadow-lg hover:opacity-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#8aa66e]/50 focus:ring-offset-2"
+                  // disabled={submitting || response.length === 0}
                 >
                   {submitting ? "Submitting..." : "Save & Continue"}
                 </button>
