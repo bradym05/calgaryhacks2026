@@ -13,8 +13,7 @@ import { useAuth } from "@/services/AuthContext";
 import questions from "../services/questions.json";
 import Footer from "@/components/Footer";
 import LifeMapTrendGraph from "@/components/GraphDisplay";
-import { db } from "@/services/firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import SnapshotPage from "@/pages/snapshots";
 
 export default function Home() {
   const router = useRouter();
@@ -39,43 +38,9 @@ export default function Home() {
 
   const handleGoogleSignIn = async () => {
     try {
-      // 1. Sign in via your AuthContext method
-      const result = (await signInWithGoogle()) as any;
-
-      console.log("Google sign-in result:", result); // Debug log
-
-      // 2. 'result' should contain the user object returned from Firebase
-      if (result?.user) {
-        const user = result.user;
-
-        // Point to: collection "users" -> document [the user's unique ID]
-        const userRef = doc(db, user.uid, "lastQuestionAnswered");
-
-        // Fetch the document once
-        const docSnap = await getDoc(userRef);
-
-        console.log("User signed in:", user.email);
-
-        // 3. If the user doesn't have a profile yet, create the default one
-        if (!docSnap.exists()) {
-          await setDoc(userRef, {
-            lastQuestionAnswered: "101",
-            email: user.email,
-            createdAt: new Date().toISOString(),
-          });
-          console.log(
-            "Success: New user document created with default question 101.",
-          );
-        } else {
-          console.log("Welcome back! Existing user document found.");
-        }
-
-        // Optional: Redirect them to their last question automatically
-        // const data = docSnap.data();
-        // router.push(`/question/${data?.lastQuestionAnswered || "101"}`);
-      }
+      await signInWithGoogle();
     } catch (error) {
-      console.error("Failed to sign in and initialize user:", error);
+      console.error("Failed to sign in:", error);
     }
   };
 
@@ -114,7 +79,8 @@ export default function Home() {
           )}
         </div>
       </nav>
-      {/* Hero Section */}
+
+      {/* Hero Section - Always shown */}
       <section className="relative min-h-[90vh] flex items-center px-6 py-16 md:py-24 max-w-7xl mx-auto overflow-hidden">
         {/* Animated background with parallax effect */}
         <div className="absolute inset-0 z-0">
@@ -183,13 +149,13 @@ export default function Home() {
               <button
                 onClick={() =>
                   document
-                    .getElementById("how-it-works")
+                    .getElementById(user ? "snapshots" : "how-it-works")
                     ?.scrollIntoView({ behavior: "smooth" })
                 }
                 className="group relative bg-white/80 backdrop-blur-sm text-gray-700 px-8 py-4 rounded-xl font-semibold border-2 border-[#d4e4c8] hover:border-[#8aa66e] transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden"
               >
                 <span className="relative z-10 flex items-center justify-center text-lg">
-                  See How It Works
+                  {user ? "View Your Snapshot" : "See How It Works"}
                   <svg
                     className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-y-1"
                     fill="none"
@@ -213,19 +179,19 @@ export default function Home() {
                 <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
                   10K+
                 </div>
-                <div className="text-sm text-gray-500">Active Users</div>
+                <div className="text-sm text-gray-500">Moments Captured</div>
               </div>
               <div className="text-center group cursor-pointer">
                 <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                  50K+
+                  85%
                 </div>
-                <div className="text-sm text-gray-500">Reflections</div>
+                <div className="text-sm text-gray-500">Report Growth</div>
               </div>
               <div className="text-center group cursor-pointer">
                 <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                  4.9★
+                  24/7
                 </div>
-                <div className="text-sm text-gray-500">User Rating</div>
+                <div className="text-sm text-gray-500">Your Timeline</div>
               </div>
             </div>
           </div>
@@ -398,153 +364,166 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How It Works Section - updated bg */}
-      <section
-        id="how-it-works"
-        className="px-6 py-16 bg-gradient-to-b from-[#f8f4ed] to-white"
-      >
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-800">
-            How LifeMap Works
-          </h2>
-          <p className="text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12">
-            A simple rhythm of reflection that reveals the beautiful complexity
-            of your growth
-          </p>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition border border-[#d4e4c8]">
-              <div className="w-12 h-12 bg-[#e8f0e2] rounded-lg flex items-center justify-center mb-4">
-                <span className="text-2xl font-bold text-[#6b8e23]">1</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">
-                Check In
-              </h3>
-              <p className="text-gray-600">
-                Answer thoughtful questions about your life, values, and
-                perspectives. Takes just 10-15 minutes.
-              </p>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition border border-[#d4e4c8]">
-              <div className="w-12 h-12 bg-[#f0f5e9] rounded-lg flex items-center justify-center mb-4">
-                <span className="text-2xl font-bold text-[#8aa66e]">2</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">
-                Wait & Reflect
-              </h3>
-              <p className="text-gray-600">
-                We'll remind you every 3-4 months to check in again. Watch
-                subtle shifts become clear patterns.
-              </p>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition border border-[#d4e4c8]">
-              <div className="w-12 h-12 bg-[#e8f0e2] rounded-lg flex items-center justify-center mb-4">
-                <span className="text-2xl font-bold text-[#556b2f]">3</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">
-                Discover Growth
-              </h3>
-              <p className="text-gray-600">
-                Visualize your evolution over time. See how your priorities,
-                beliefs, and goals transform.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Grid - updated icons & colors */}
-      <section className="px-6 py-16 max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
-          More Than Just a Journal
-        </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="p-6 bg-white rounded-xl shadow-md border border-[#d4e4c8]">
-            <ChartBarIcon className="w-8 h-8 text-[#6b8e23] mb-4" />
-            <h3 className="font-semibold mb-2 text-gray-800">
-              Visual Evolution
-            </h3>
-            <p className="text-sm text-gray-600">
-              See your growth through beautiful charts and timelines
-            </p>
-          </div>
-          <div className="p-6 bg-white rounded-xl shadow-md border border-[#d4e4c8]">
-            <SparklesIcon className="w-8 h-8 text-[#8aa66e] mb-4" />
-            <h3 className="font-semibold mb-2 text-gray-800">Deep Questions</h3>
-            <p className="text-sm text-gray-600">
-              Thoughtfully crafted prompts that spark real reflection
-            </p>
-          </div>
-          <div className="p-6 bg-white rounded-xl shadow-md border border-[#d4e4c8]">
-            <ClockIcon className="w-8 h-8 text-[#556b2f] mb-4" />
-            <h3 className="font-semibold mb-2 text-gray-800">
-              Gentle Reminders
-            </h3>
-            <p className="text-sm text-gray-600">
-              Perfectly timed check-ins every 3-4 months
-            </p>
-          </div>
-          <div className="p-6 bg-white rounded-xl shadow-md border border-[#d4e4c8]">
-            <ShieldCheckIcon className="w-8 h-8 text-[#8aa66e] mb-4" />
-            <h3 className="font-semibold mb-2 text-gray-800">
-              Private & Secure
-            </h3>
-            <p className="text-sm text-gray-600">
-              Your journey stays yours with encrypted storage
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Sample Questions Preview - updated gradient */}
-      <section className="px-6 py-16 bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Questions That Matter
-          </h2>
-          <p className="text-xl text-green-50 mb-12 max-w-2xl mx-auto">
-            Each check-in invites you to explore different dimensions of your
-            life
-          </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-left">
-            <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-              "On a scale of 1-10, how aligned are you with your career path?"
-            </div>
-            <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-              "Define 'success' in one sentence."
-            </div>
-            <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-              "Rank what matters most to you today: Career, Romance, Health,
-              Creativity, Financial Security"
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="px-6 py-16 max-w-4xl mx-auto text-center">
-        <div className="bg-white rounded-3xl shadow-2xl p-12 border border-[#d4e4c8]">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
-            Start Mapping Your Life Today
-          </h2>
-          <p className="text-xl text-gray-600 mb-8">
-            Join thousands of others on a journey of self-discovery. Free
-            forever.
-          </p>
-          <Link
-            href="/register"
-            className="bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white px-8 py-4 rounded-lg font-semibold hover:opacity-90 transition shadow-lg hover:shadow-xl inline-flex items-center group text-lg"
+      {/* Conditional content based on authentication */}
+      {user ? (
+        // Show Snapshot for logged-in users
+        <section id="snapshots" className="scroll-mt-16">
+          <SnapshotPage />
+        </section>
+      ) : (
+        // Show landing page content for non-authenticated users
+        <>
+          {/* How It Works Section - updated bg */}
+          <section
+            id="how-it-works"
+            className="px-6 py-16 bg-gradient-to-b from-[#f8f4ed] to-white"
           >
-            Create Your Life Map
-            <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition" />
-          </Link>
-          <p className="text-sm text-gray-500 mt-4">
-            No credit card required • Cancel anytime
-          </p>
-        </div>
-      </section>
+            <div className="max-w-7xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-800">
+                How LifeMap Works
+              </h2>
+              <p className="text-xl text-gray-600 text-center max-w-2xl mx-auto mb-12">
+                A simple rhythm of reflection that reveals the beautiful
+                complexity of your growth
+              </p>
+              <div className="grid md:grid-cols-3 gap-8">
+                <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition border border-[#d4e4c8]">
+                  <div className="w-12 h-12 bg-[#e8f0e2] rounded-lg flex items-center justify-center mb-4">
+                    <span className="text-2xl font-bold text-[#6b8e23]">1</span>
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                    Check In
+                  </h3>
+                  <p className="text-gray-600">
+                    Answer thoughtful questions about your life, values, and
+                    perspectives. Takes just 10-15 minutes.
+                  </p>
+                </div>
+                <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition border border-[#d4e4c8]">
+                  <div className="w-12 h-12 bg-[#f0f5e9] rounded-lg flex items-center justify-center mb-4">
+                    <span className="text-2xl font-bold text-[#8aa66e]">2</span>
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                    Wait & Reflect
+                  </h3>
+                  <p className="text-gray-600">
+                    We'll remind you every 3-4 months to check in again. Watch
+                    subtle shifts become clear patterns.
+                  </p>
+                </div>
+                <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition border border-[#d4e4c8]">
+                  <div className="w-12 h-12 bg-[#e8f0e2] rounded-lg flex items-center justify-center mb-4">
+                    <span className="text-2xl font-bold text-[#556b2f]">3</span>
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                    Discover Growth
+                  </h3>
+                  <p className="text-gray-600">
+                    Visualize your evolution over time. See how your priorities,
+                    beliefs, and goals transform.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
 
-      {/* Footer */}
-      <Footer />
+          {/* Features Grid - updated icons & colors */}
+          <section className="px-6 py-16 max-w-7xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
+              More Than Just a Journal
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="p-6 bg-white rounded-xl shadow-md border border-[#d4e4c8]">
+                <ChartBarIcon className="w-8 h-8 text-[#6b8e23] mb-4" />
+                <h3 className="font-semibold mb-2 text-gray-800">
+                  Visual Evolution
+                </h3>
+                <p className="text-sm text-gray-600">
+                  See your growth through beautiful charts and timelines
+                </p>
+              </div>
+              <div className="p-6 bg-white rounded-xl shadow-md border border-[#d4e4c8]">
+                <SparklesIcon className="w-8 h-8 text-[#8aa66e] mb-4" />
+                <h3 className="font-semibold mb-2 text-gray-800">
+                  Deep Questions
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Thoughtfully crafted prompts that spark real reflection
+                </p>
+              </div>
+              <div className="p-6 bg-white rounded-xl shadow-md border border-[#d4e4c8]">
+                <ClockIcon className="w-8 h-8 text-[#556b2f] mb-4" />
+                <h3 className="font-semibold mb-2 text-gray-800">
+                  Gentle Reminders
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Perfectly timed check-ins every 3-4 months
+                </p>
+              </div>
+              <div className="p-6 bg-white rounded-xl shadow-md border border-[#d4e4c8]">
+                <ShieldCheckIcon className="w-8 h-8 text-[#8aa66e] mb-4" />
+                <h3 className="font-semibold mb-2 text-gray-800">
+                  Private & Secure
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Your journey stays yours with encrypted storage
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Sample Questions Preview - updated gradient */}
+          <section className="px-6 py-16 bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white">
+            <div className="max-w-7xl mx-auto text-center">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Questions That Matter
+              </h2>
+              <p className="text-xl text-green-50 mb-12 max-w-2xl mx-auto">
+                Each check-in invites you to explore different dimensions of
+                your life
+              </p>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-left">
+                <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4 border border-white/20">
+                  "On a scale of 1-10, how aligned are you with your career
+                  path?"
+                </div>
+                <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4 border border-white/20">
+                  "Define 'success' in one sentence."
+                </div>
+                <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4 border border-white/20">
+                  "Rank what matters most to you today: Career, Romance, Health,
+                  Creativity, Financial Security"
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* CTA Section */}
+          <section className="px-6 py-16 max-w-4xl mx-auto text-center">
+            <div className="bg-white rounded-3xl shadow-2xl p-12 border border-[#d4e4c8]">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
+                Start Mapping Your Life Today
+              </h2>
+              <p className="text-xl text-gray-600 mb-8">
+                Join thousands of others on a journey of self-discovery. Free
+                forever.
+              </p>
+              <Link
+                href="/register"
+                className="bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white px-8 py-4 rounded-lg font-semibold hover:opacity-90 transition shadow-lg hover:shadow-xl inline-flex items-center group text-lg"
+              >
+                Create Your Life Map
+                <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition" />
+              </Link>
+              <p className="text-sm text-gray-500 mt-4">
+                No credit card required • Cancel anytime
+              </p>
+            </div>
+          </section>
+          {/* Footer */}
+          <Footer />
+        </>
+      )}
     </div>
   );
 }
