@@ -168,12 +168,6 @@ export default function GraphDisplay({
                 <div className="grid lg:grid-cols-2 gap-8 items-start">
                     {/* Left */}
                     <div className="space-y-5">
-                        <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-[#d4e4c8] shadow-sm">
-                            <span className="w-2 h-2 bg-[#6b8e23] rounded-full animate-pulse mr-2" />
-                            <span className="text-sm font-medium text-[#556b2f]">
-                                {valueLabel} over time
-                            </span>
-                        </div>
 
                         <h2 className="text-3xl md:text-4xl font-bold leading-tight text-gray-800">
                             <span className="bg-gradient-to-r from-[#6b8e23] via-[#8aa66e] to-[#a8c686] bg-clip-text text-transparent">
@@ -345,7 +339,7 @@ export default function GraphDisplay({
                                         )}
 
                                         {/* points + hover */}
-                                        {points.map((pt, i) => {
+                                        {hasData && points.map((pt, i) => {
                                             const isHover = hoverIndex === i;
                                             return (
                                                 <g

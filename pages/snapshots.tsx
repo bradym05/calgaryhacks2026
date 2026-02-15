@@ -1,22 +1,19 @@
 "use client";
 
+import { useAuth } from "@/services/AuthContext";
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
     CalendarDaysIcon,
     ArrowRightIcon,
     ChartBarIcon,
-    SparklesIcon,
 } from "@heroicons/react/24/outline";
 
 import GraphDisplay from "@/components/GraphDisplay";
 import Footer from "@/components/Footer";
 import DatePicker from "@/components/DatePicker";
-import { Question } from "@/types/questions";
 import questions from "@/services/questions.json";
 import { fetchAnswers } from "@/services/getAnswers";
-
-type Point = { date: string | Date; value: number };
 
 function toDate(d: string | Date) {
     return d instanceof Date ? d : new Date(d);
@@ -28,41 +25,71 @@ function toISODate(d: Date) {
     return `${yyyy}-${mm}-${dd}`;
 }
 
+type AnsweredQuestions = {
+    question: string;
+    answer: string;
+    date: Date;
+    type: string;
+}[];
+
 export default function SnapshotPage() {
+    const { user } = useAuth();
 
-    const answered = {
-        rating: [],
-        freeForm: [],
-        trueOrFalse: []
-    }
+    const [answered, setAnswered] = useState<AnsweredQuestions>([]);
+    const [minDate, setMinDate] = useState<Date>(new Date());
+    const maxDate = useMemo(() => new Date(), []);
 
-    // ANSWER PARSING
-    Object.entries(questions).forEach(([questionId, question]) => {
-        // Get answers (if any)
-        fetchAnswers(questionId).then(({ success, decodedSortedAnswers }) => {
-            if (decodedSortedAnswers && success) {
-                // Iterate over answers
-                for (let rawAnswerString of decodedSortedAnswers) {
-                    // Get date
-                    let splitAnswer = rawAnswerString.split(":")
-                    let answerInfo = {
-                        value: splitAnswer[0],
-                        date: toDate(splitAnswer[1])
+    // Keep these as ISO date strings (what <input type="date"> uses)
+    const [start, setStart] = useState<string>(() => toISODate(new Date()));
+    const [end, setEnd] = useState<string>(() => toISODate(maxDate));
+
+    // Load answers (side effects must not run during render)
+    useEffect(() => {
+        let cancelled = false;
+
+        async function load() {
+            const uid = user?.uid || "default";
+
+            const collected: AnsweredQuestions = [];
+            let newMinDate = new Date();
+
+            await Promise.all(
+                Object.entries(questions).map(async ([questionId, question]) => {
+                    const { success, decodedSortedAnswers } = await fetchAnswers(
+                        questionId,
+                        uid
+                    );
+
+                    if (success && decodedSortedAnswers) {
+                        for (const rawAnswerString of decodedSortedAnswers) {
+                            const splitAnswer = rawAnswerString.split(":");
+                            const value = splitAnswer[0];
+                            const date = toDate(splitAnswer[1]);
+
+                            collected.push({
+                                question: question.question,
+                                answer: value,
+                                date,
+                                type: question.type,
+                            });
+
+                            if (date < newMinDate) newMinDate = date;
+                        }
                     }
-                    console.log(answerInfo)
-                }
+                })
+            );
+
+            if (!cancelled) {
+                setAnswered(collected);
+                setMinDate(newMinDate);
             }
-        });
-    })
+        }
 
-    // TODO: Get min and max date from all data
-    const { minDate, maxDate } = useMemo(() => {
-
-        return { minDate: toISODate(new Date()), maxDate: toISODate(new Date()) };
-    }, []);
-
-    const [start, setStart] = useState(minDate);
-    const [end, setEnd] = useState(maxDate);
+        load();
+        return () => {
+            cancelled = true;
+        };
+    }, [user?.uid]);
 
     const invalidRange = useMemo(
         () => toDate(start).getTime() > toDate(end).getTime(),
@@ -70,27 +97,15 @@ export default function SnapshotPage() {
     );
 
     const presets = [
-        {
-            preset: "30d",
-            days: 30
-        },
-        {
-            preset: "60d",
-            days: 60
-        },
-        {
-            preset: "90d",
-            days: 90
-        },
-        {
-            preset: "ytd",
-            days: 365
-        },
-    ]
+        { preset: "30d", days: 30 },
+        { preset: "60d", days: 60 },
+        { preset: "90d", days: 90 },
+        { preset: "ytd", days: 365 },
+    ];
 
     const [currentPreset, setCurrentPreset] = useState("all");
 
-    // Update rangeo on preset changed
+    // Update range on preset changed
     useEffect(() => {
         const endDate = toDate(maxDate);
         let didSet = false;
@@ -98,20 +113,26 @@ export default function SnapshotPage() {
         for (let presetInfo of presets) {
             if (presetInfo.preset == currentPreset) {
                 didSet = true;
-                const start = new Date(endDate);
-                start.setDate(start.getDate() - presetInfo.days);
-                setStart(toISODate(start));
-                setEnd(maxDate);
+                const startDate = new Date(endDate);
+                startDate.setDate(startDate.getDate() - presetInfo.days);
+                setStart(toISODate(startDate));
+                setEnd(toISODate(maxDate));
                 break;
             }
         }
 
         // Show all if no preset matched
         if (!didSet) {
-            setStart(minDate);
-            setEnd(maxDate);
+            setStart(toISODate(minDate));
+            setEnd(toISODate(maxDate));
         }
-    }, [currentPreset])
+    }, [currentPreset, minDate, maxDate]);
+
+    const ratingQuestions = useMemo(() => {
+        return Array.from(
+            new Set(answered.filter((a) => a.type == "rating").map((a) => a.question))
+        );
+    }, [answered]);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#f5f0e6] via-[#f8f4ed] to-[#e8f0e2]">
@@ -193,29 +214,28 @@ export default function SnapshotPage() {
                                 max={maxDate}
                                 onChange={(e) => setEnd(e.target.value)}
                             />
-
                         </div>
 
                         <div className="flex flex-wrap gap-3">
                             {presets.map((presetInfo) => (
                                 <button
+                                    key={presetInfo.preset}
                                     onClick={() => {
-                                        // Check if selected already
                                         if (currentPreset == presetInfo.preset) {
-                                            // Reset
                                             setCurrentPreset("");
                                         } else {
-                                            // Select
-                                            setCurrentPreset(presetInfo.preset)
+                                            setCurrentPreset(presetInfo.preset);
                                         }
                                     }}
                                     className={
-                                        currentPreset == presetInfo.preset ?
-                                            "bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] text-white px-4 py-3 rounded-xl font-semibold transition shadow-md hover:shadow-lg hover:opacity-95" :
-                                            "bg-white/80 backdrop-blur-sm text-gray-700 px-4 py-3 rounded-xl font-semibold border-2 border-[#d4e4c8] hover:border-[#8aa66e] transition shadow-sm hover:shadow-md"
+                                        currentPreset == presetInfo.preset
+                                            ? "bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] text-white px-4 py-3 rounded-xl font-semibold transition shadow-md hover:shadow-lg hover:opacity-95"
+                                            : "bg-white/80 backdrop-blur-sm text-gray-700 px-4 py-3 rounded-xl font-semibold border-2 border-[#d4e4c8] hover:border-[#8aa66e] transition shadow-sm hover:shadow-md"
                                     }
                                 >
-                                    {presetInfo.days == 365 ? "YTD" : `Last ${presetInfo.days} days`}
+                                    {presetInfo.days == 365
+                                        ? "YTD"
+                                        : `Last ${presetInfo.days} days`}
                                 </button>
                             ))}
                         </div>
@@ -238,7 +258,19 @@ export default function SnapshotPage() {
 
                 {/* Graphs */}
                 <div className="mt-10 space-y-10">
-
+                    {ratingQuestions.map((q) => (
+                        <GraphDisplay
+                            key={q}
+                            title={q}
+                            data={answered
+                                .filter((a) => a.question == q)
+                                .map((a) => ({
+                                    date: a.date,
+                                    value: parseInt(a.answer, 10),
+                                }))}
+                            height={240}
+                        />
+                    ))}
                 </div>
             </main>
 

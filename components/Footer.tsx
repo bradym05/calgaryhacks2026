@@ -9,7 +9,7 @@ export default function Footer() {
             <div className="w-6 h-6 bg-gradient-to-r from-[#8aa66e] to-[#a8c686] rounded"></div>
             <span className="font-semibold text-gray-800">LifeMap</span>
           </div>
-          <div className="flex space-x-6 text-sm text-gray-600">
+          <div className="flex space-x-6 text-sm text-gray-600 ">
             <Link href="/about" className="hover:text-gray-900 transition">
               About
             </Link>
