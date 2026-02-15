@@ -73,6 +73,14 @@ export default function QuestionPage({ params }: PageProps) {
           response.trim(),
         );
         setResponse("");
+        // Navigate to next question
+        const nextId = getNextQuestionId(questionId || "101");
+        if (nextId === "101") {
+          // route back to main page if we've looped through all questions
+          router.push(`/`);
+          return;
+        }
+        router.push(`/question/${nextId}`);
         // After saving, check how many questions the user has answered
         const answered = await fetchAnsweredCount(user?.uid || "default");
         if (answered >= totalQuestions) {
@@ -99,6 +107,17 @@ export default function QuestionPage({ params }: PageProps) {
     if (choices.length === 0) return excludeId ?? keys[0];
     const idx = Math.floor(Math.random() * choices.length);
     return choices[idx];
+  }
+
+  function getNextQuestionId(currentId: string) {
+    const keys = Object.keys(questions).sort((a, b) => Number(a) - Number(b));
+    const currentIndex = keys.indexOf(currentId);
+
+    if (currentIndex === -1 || currentIndex === keys.length - 1) {
+      return keys[0];
+    }
+
+    return keys[currentIndex + 1];
   }
 
   function handleSkip() {

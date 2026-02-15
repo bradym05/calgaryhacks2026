@@ -13,6 +13,8 @@ import { useAuth } from "@/services/AuthContext";
 import questions from "../services/questions.json";
 import Footer from "@/components/Footer";
 import LifeMapTrendGraph from "@/components/GraphDisplay";
+import { db } from "@/services/firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export default function Home() {
   const router = useRouter();
@@ -37,9 +39,43 @@ export default function Home() {
 
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithGoogle();
+      // 1. Sign in via your AuthContext method
+      const result = (await signInWithGoogle()) as any;
+
+      console.log("Google sign-in result:", result); // Debug log
+
+      // 2. 'result' should contain the user object returned from Firebase
+      if (result?.user) {
+        const user = result.user;
+
+        // Point to: collection "users" -> document [the user's unique ID]
+        const userRef = doc(db, user.uid, "lastQuestionAnswered");
+
+        // Fetch the document once
+        const docSnap = await getDoc(userRef);
+
+        console.log("User signed in:", user.email);
+
+        // 3. If the user doesn't have a profile yet, create the default one
+        if (!docSnap.exists()) {
+          await setDoc(userRef, {
+            lastQuestionAnswered: "101",
+            email: user.email,
+            createdAt: new Date().toISOString(),
+          });
+          console.log(
+            "Success: New user document created with default question 101.",
+          );
+        } else {
+          console.log("Welcome back! Existing user document found.");
+        }
+
+        // Optional: Redirect them to their last question automatically
+        // const data = docSnap.data();
+        // router.push(`/question/${data?.lastQuestionAnswered || "101"}`);
+      }
     } catch (error) {
-      console.error("Failed to sign in:", error);
+      console.error("Failed to sign in and initialize user:", error);
     }
   };
 
