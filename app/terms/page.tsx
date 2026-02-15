@@ -1,13 +1,13 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
+import NavHeader from "@/components/header";
 import Footer from "@/components/Footer";
 
 export default function Terms() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f5f0e6] via-[#f8f4ed] to-[#e8f0e2]">
       {/* Navigation */}
-      <Navbar />
+      <NavHeader />
 
       {/* Content */}
       <div className="max-w-4xl mx-auto px-6 py-16 md:py-24">
