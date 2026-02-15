@@ -22,10 +22,9 @@ export default function Footer() {
             <Link href="/contract" className="hover:text-gray-900 transition">
               Contract
             </Link>
+            
           </div>
-          <p className="text-sm text-gray-500 mt-4 md:mt-0">
-            © 2026 LifeMap. Made for Calgary Hacks.
-          </p>
+
         </div>
       </div>
     </footer>
