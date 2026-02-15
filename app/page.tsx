@@ -58,6 +58,10 @@ export default function Home() {
       {/* Navigation */}
       <nav className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
         <div className="flex items-center space-x-2">
+          {/* <div className="w-8 h-8 bg-gradient-to-r from-[#8aa66e] to-[#a8c686] rounded-lg"></div>
+          <span className="text-xl font-bold bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] bg-clip-text text-transparent">
+            <Link href="/">LifeMap</Link>
+          </span> */}
           <Link href="/" className="flex items-center space-x-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -75,16 +79,34 @@ export default function Home() {
         </div>
         <div className="flex items-center space-x-4">
           {!loading && (
-            <button
-              onClick={handleGoogleSignIn}
-              className="bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white px-5 py-2 rounded-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
-            >
-              Sign in with Google
-            </button>
+            <>
+              {user ? (
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-[#d4e4c8]">
+                    <UserCircleIcon className="w-5 h-5 text-[#6b8e23]" />
+                    <span className="text-gray-700 text-sm font-medium">
+                      {getUserName()}
+                    </span>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="text-gray-600 hover:text-gray-900 px-3 py-2 transition text-sm hover:bg-white/50 rounded-lg"
+                  >
+                    Log out
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={handleGoogleSignIn}
+                  className="bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white px-5 py-2 rounded-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
+                >
+                  Sign in with Google
+                </button>
+              )}
+            </>
           )}
         </div>
       </nav>
-
       {/* Conditional content based on authentication */}
       {user ? (
         // Show Snapshot for logged-in users
