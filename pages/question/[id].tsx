@@ -7,6 +7,7 @@
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
 import { Question } from "@/types/questions";
+import RatingQuestion from "@/components/RatingQuestion";
 import questions from "@/services/questions.json";
 import FreeFormQuestion from "@/components/FreeFormQuestion";
 import BooleanQuestion from "@/components/BooleanQuestion";
@@ -88,6 +89,13 @@ export default function QuestionPage({ params }: PageProps) {
                     setResponse={setResponse}
                   />
                 )}
+              {question.type == "rating" && (
+                <RatingQuestion
+                  question={question.question}
+                  response={response}
+                  setResponse={setResponse}
+                />
+              )}
               
 
               <div className="mt-8 flex flex-col sm:flex-row items-center justify-end gap-4">

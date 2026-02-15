@@ -1,14 +1,15 @@
 "use client";
 
 import { useState, useEffect} from 'react';
+import type { QuestionProps } from "@/types/questions"
 
-const RatingQuestion = ({ onChange, questionInfo }) => {
+const RatingQuestion = ({question, response, setResponse}: QuestionProps) => {
   const [sliderValue, setSliderValue] = useState(5);
 
   const handleSliderChange = (e) => {
     const newValue = parseInt(e.target.value);
     setSliderValue(newValue);
-    onChange && onChange(newValue);
+    setResponse && setResponse(newValue.toString());
   };
 
   const percent = ((sliderValue - 1) / 9) * 100;
@@ -17,7 +18,7 @@ const RatingQuestion = ({ onChange, questionInfo }) => {
     <div className="w-full max-w-md mx-auto">
       <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow p-6 text-center">
         <label htmlFor="slider" className="block text-lg font-medium text-gray-800 dark:text-gray-100 mb-4 text-center">
-          {questionInfo?.question || "Rate from 1 to 10:"}
+          {question || "Rate from 1 to 10:"}
         </label>
 
         <div className="relative flex flex-col items-center">
@@ -28,9 +29,9 @@ const RatingQuestion = ({ onChange, questionInfo }) => {
             max="10"
             value={sliderValue}
             onChange={handleSliderChange}
-            className="rating-slider mx-auto w-11/12 h-4 md:h-5 bg-gray-200 rounded-full appearance-none cursor-pointer accent-blue-500"
+            className="rating-slider mx-auto w-11/12 h-4 md:h-5 bg-gray-200 rounded-full appearance-none cursor-pointer accent-[#8aa66e]"
             style={{
-              background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${percent}%, #e5e7eb ${percent}%, #e5e7eb 100%)`,
+              background: `linear-gradient(to right, #8aa66e 0%, #8aa66e ${percent}%, #e5e7eb ${percent}%, #e5e7eb 100%)`,
             }}
           />
 
@@ -39,10 +40,6 @@ const RatingQuestion = ({ onChange, questionInfo }) => {
               {sliderValue + " out of 10"}
             </span>
           </div>
-
-          <button className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded mt-6 transition-colors duration-200">
-            Submit
-          </button>
         </div>
       </div>
     </div>

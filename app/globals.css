@@ -80,8 +80,8 @@ body {
   width: 36px;
   height: 36px;
   border-radius: 9999px;
-  background: #3b82f6; 
-  border: 4px solid #3b82f6; 
+  background: #8aa66e; 
+  border: 4px solid #8aa66e; 
   box-shadow: 0 6px 18px rgba(59,130,246,0.22); 
   margin-top: -12px; 
   cursor: pointer; 
@@ -99,8 +99,8 @@ body {
   width: 36px;
   height: 36px;
   border-radius: 9999px;
-  background: #3b82f6;
-  border: 4px solid #3b82f6;
+  background: #8aa66e;
+  border: 4px solid #8aa66e;
   box-shadow: 0 6px 18px rgba(59,130,246,0.22);
   cursor: pointer;
   transition: transform 120ms ease, box-shadow 120ms ease;
@@ -113,11 +113,11 @@ body {
 /* Dark-mode adjustments: make border contrast against dark background */
 @media (prefers-color-scheme: dark) {
   .rating-slider::-webkit-slider-thumb {
-    border: 4px solid #60a5fa; 
-    background: #60a5fa; 
+    border: 4px solid #8aa66e; 
+    background: #8aa66e; 
   }
   .rating-slider::-moz-range-thumb {
-    border: 4px solid #60a5fa; 
-    background: #60a5fa; 
+    border: 4px solid #8aa66e; 
+    background: #8aa66e; 
   }
 }
