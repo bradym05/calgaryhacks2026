@@ -94,402 +94,405 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Hero Section - Personalized for logged-in users */}
-      <section className="relative min-h-[90vh] flex items-center px-6 py-16 md:py-24 max-w-7xl mx-auto overflow-hidden">
-        {/* Animated background with parallax effect */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#e8f0e2]/30 via-transparent to-[#c4d9a8]/30"></div>
-          <div
-            className="w-full h-full bg-cover bg-center opacity-20 scale-110 animate-ken-burns"
-            style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
-            }}
-          />
-
-          {/* Floating orbs - more vibrant when logged in */}
-          <div
-            className={`absolute top-20 left-1/4 w-64 h-64 ${user ? "bg-[#6b8e23]/20" : "bg-[#8aa66e]/10"} rounded-full blur-3xl animate-float`}
-          ></div>
-          <div
-            className={`absolute bottom-20 right-1/4 w-80 h-80 ${user ? "bg-[#8aa66e]/20" : "bg-[#a8c686]/10"} rounded-full blur-3xl animate-float animation-delay-2000`}
-          ></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#c4d9a8]/5 rounded-full blur-3xl animate-pulse-slow"></div>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10 w-full">
-          {/* Left Content */}
-          <div className="space-y-8 animate-fade-up">
-            {/* Personalized Welcome Badge */}
-            <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-[#d4e4c8] shadow-sm animate-fade-up">
-              <span
-                className={`w-2 h-2 ${user ? "bg-green-500" : "bg-[#6b8e23]"} rounded-full animate-pulse mr-2`}
-              ></span>
-              <span className="text-sm font-medium text-[#556b2f]">
-                {user ? (
-                  <>✨ Welcome back, {getUserName()}! Ready to reflect?</>
-                ) : (
-                  <>✨ New: 3-4 Month Check-ins</>
-                )}
-              </span>
-            </div>
-
-            {/* Main Heading - Personalized */}
-            <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-              {user ? (
-                <>
-                  <span className="text-gray-800">Continue Your</span>
-                  <br />
-                  <span className="relative">
-                    <span className="bg-gradient-to-r from-[#6b8e23] via-[#8aa66e] to-[#a8c686] bg-clip-text text-transparent relative z-10">
-                      Growth Journey
-                    </span>
-                    <span className="absolute -bottom-2 left-0 w-full h-3 bg-[#c4d9a8]/30 -rotate-1 rounded-full blur-sm"></span>
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span className="text-gray-800">Map Your</span>
-                  <br />
-                  <span className="relative">
-                    <span className="bg-gradient-to-r from-[#6b8e23] via-[#8aa66e] to-[#a8c686] bg-clip-text text-transparent relative z-10">
-                      Evolving Self
-                    </span>
-                    <span className="absolute -bottom-2 left-0 w-full h-3 bg-[#c4d9a8]/30 -rotate-1 rounded-full blur-sm"></span>
-                  </span>
-                </>
-              )}
-            </h1>
-
-            {/* Description - Personalized */}
-            <p className="text-xl lg:text-2xl text-gray-600 max-w-lg leading-relaxed relative pl-6 border-l-4 border-[#8aa66e] animate-fade-up animation-delay-100">
-              {user ? (
-                <>
-                  You've started mapping your journey. Continue where you left
-                  off and watch your perspectives evolve.
-                </>
-              ) : (
-                <>
-                  Watch your perspectives transform over time. LifeMap helps you
-                  track how your thoughts on career, relationships, and purpose
-                  evolve through regular check-ins.
-                </>
-              )}
-            </p>
-
-            {/* CTA Buttons - Different for logged-in users */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-fade-up animation-delay-200">
-              <button
-                onClick={startJourney}
-                className="group relative bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] text-white px-8 py-4 rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:-translate-y-1"
-              >
-                {/* Shine effect */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                  <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/20 animate-shine" />
-                </div>
-
-                <span className="relative z-10 flex items-center justify-center text-lg">
-                  {user ? "Continue Reflecting" : "Start Your Journey"}
-                  <ArrowRightIcon className="w-5 h-5 ml-2 transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110" />
-                </span>
-              </button>
-
-              <button
-                onClick={() =>
-                  document
-                    .getElementById(user ? "snapshots" : "how-it-works")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-                className="group relative bg-white/80 backdrop-blur-sm text-gray-700 px-8 py-4 rounded-xl font-semibold border-2 border-[#d4e4c8] hover:border-[#8aa66e] transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden"
-              >
-                <span className="relative z-10 flex items-center justify-center text-lg">
-                  {user ? "View Your Snapshot" : "See How It Works"}
-                  <svg
-                    className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-y-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 14l-7 7-7-7m14-6l-7 7-7-7"
-                    />
-                  </svg>
-                </span>
-              </button>
-            </div>
-
-            {/* Stats with counters - Personalized for logged-in users */}
-            <div className="flex gap-8 pt-8 animate-fade-up animation-delay-300">
-              {user ? (
-                // Personalized stats for logged-in users
-                <>
-                  <div className="text-center group cursor-pointer">
-                    <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                      12
-                    </div>
-                    <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
-                      <HeartIcon className="w-4 h-4 text-[#6b8e23]" />
-                      Reflections
-                    </div>
-                  </div>
-                  <div className="text-center group cursor-pointer">
-                    <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                      3
-                    </div>
-                    <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
-                      <ClockIcon className="w-4 h-4 text-[#6b8e23]" />
-                      Check-ins
-                    </div>
-                  </div>
-                  <div className="text-center group cursor-pointer">
-                    <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                      85%
-                    </div>
-                    <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
-                      <ChartBarIcon className="w-4 h-4 text-[#6b8e23]" />
-                      Growth
-                    </div>
-                  </div>
-                </>
-              ) : (
-                // Public stats for non-logged-in users
-                <>
-                  <div className="text-center group cursor-pointer">
-                    <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                      50+
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      Reflection Prompts
-                    </div>
-                  </div>
-                  <div className="text-center group cursor-pointer">
-                    <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                      3-4 mo
-                    </div>
-                    <div className="text-sm text-gray-500">Check-in Rhythm</div>
-                  </div>
-                  <div className="text-center group cursor-pointer">
-                    <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                      100%
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      Private & Secure
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* Quick action for logged-in users */}
-            {user && (
-              <div className="pt-4 flex items-center gap-3 text-sm text-gray-600">
-                <BookOpenIcon className="w-5 h-5 text-[#8aa66e]" />
-                <span>
-                  Last reflection:{" "}
-                  <span className="font-medium text-[#6b8e23]">2 days ago</span>
-                </span>
-                <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
-                <span>
-                  Next check-in:{" "}
-                  <span className="font-medium text-[#6b8e23]">
-                    in 2 months
-                  </span>
-                </span>
-              </div>
-            )}
-          </div>
-
-          {/* Right Content - Enhanced Preview Card */}
-          <div className="relative animate-fade-up animation-delay-100">
-            {/* Main Preview Card */}
-            <div className="relative group perspective">
-              <div
-                className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-6 border ${user ? "border-[#8aa66e]" : "border-[#d4e4c8]/60"} hover:shadow-3xl hover:-translate-y-2 hover:rotate-1 transition-all duration-500 transform-gpu`}
-              >
-                {/* Card Header with animated dots */}
-                <div className="flex items-center space-x-2 mb-6">
-                  <div className="flex space-x-1.5">
-                    <div className="w-3 h-3 bg-red-400 rounded-full animate-pulse"></div>
-                    <div className="w-3 h-3 bg-yellow-400 rounded-full animate-pulse animation-delay-200"></div>
-                    <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse animation-delay-400"></div>
-                  </div>
-                  <span className="text-sm text-gray-400 ml-2 font-mono">
-                    {user
-                      ? `${getUserName()}'s journey`
-                      : "lifemap.app/dashboard"}
-                  </span>
-
-                  {/* Live indicator */}
-                  <div className="ml-auto flex items-center space-x-1">
-                    <span
-                      className={`w-2 h-2 ${user ? "bg-green-500" : "bg-green-400"} rounded-full animate-pulse`}
-                    ></span>
-                    <span className="text-xs text-gray-400">Live</span>
-                  </div>
-                </div>
-
-                {/* Progress Visualization - same as before */}
-                <div className="space-y-6">
-                  {/* Career Progress */}
-                  <div className="group/item cursor-pointer">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-700 group-hover/item:text-[#6b8e23] transition-colors">
-                        Career Alignment
-                      </span>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm font-semibold text-[#6b8e23]">
-                          ↑ 15%
-                        </span>
-                        <span className="text-xs text-gray-400">
-                          vs last quarter
-                        </span>
-                      </div>
-                    </div>
-                    <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] rounded-full transition-all duration-1000"
-                        style={{ width: "75%" }}
-                      >
-                        <div className="w-full h-full animate-shimmer"></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Work-Life Balance */}
-                  <div className="group/item cursor-pointer">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-700 group-hover/item:text-[#6b8e23] transition-colors">
-                        Work-Life Balance
-                      </span>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm font-semibold text-[#556b2f]">
-                          → Stable
-                        </span>
-                        <span className="text-xs text-gray-400">
-                          consistent
-                        </span>
-                      </div>
-                    </div>
-                    <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-[#8aa66e] to-[#a8c686] rounded-full transition-all duration-1000"
-                        style={{ width: "50%" }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Personal Growth */}
-                  <div className="group/item cursor-pointer">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-700 group-hover/item:text-[#6b8e23] transition-colors">
-                        Personal Growth
-                      </span>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm font-semibold text-[#6b8e23]">
-                          ↑ 28%
-                        </span>
-                        <span className="text-xs text-gray-400">
-                          accelerating
-                        </span>
-                      </div>
-                    </div>
-                    <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-[#a8c686] to-[#c4d9a8] rounded-full transition-all duration-1000"
-                        style={{ width: "82%" }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Next Milestone */}
-                  <div className="mt-6 pt-6 border-t border-[#d4e4c8]/50">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-xs text-gray-400 uppercase tracking-wider">
-                          Next Check-in
-                        </p>
-                        <p className="text-lg font-semibold text-[#6b8e23]">
-                          March 2026
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-xs text-gray-400 uppercase tracking-wider">
-                          Progress
-                        </p>
-                        <p className="text-lg font-semibold text-gray-700">
-                          Day 67/90
-                        </p>
-                      </div>
-                    </div>
-                    {/* Mini progress bar */}
-                    <div className="mt-3 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                      <div className="h-full w-3/4 bg-gradient-to-r from-[#8aa66e] to-[#a8c686] rounded-full"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Floating Stats Cards */}
-            <div className="absolute -top-6 -right-6 bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-4 border border-[#d4e4c8] animate-float animation-delay-1000 hidden lg:block">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-[#e8f0e2] rounded-lg flex items-center justify-center">
-                  <SparklesIcon className="w-5 h-5 text-[#6b8e23]" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400">
-                    {user ? "Your Streak" : "Reflection Streak"}
-                  </p>
-                  <p className="text-lg font-bold text-[#6b8e23]">
-                    {user ? "8 weeks" : "12 weeks"}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="absolute -bottom-6 -left-6 bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-4 border border-[#d4e4c8] animate-float animation-delay-2000 hidden lg:block">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-[#e8f0e2] rounded-lg flex items-center justify-center">
-                  <ChartBarIcon className="w-5 h-5 text-[#6b8e23]" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400">
-                    {user ? "Your Insights" : "Insights Gained"}
-                  </p>
-                  <p className="text-lg font-bold text-[#6b8e23]">
-                    {user ? "12 patterns" : "24 patterns"}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Animated background elements */}
-            <div className="absolute -z-10 inset-0">
-              <div className="absolute top-1/4 right-1/4 w-72 h-72 bg-[#c4d9a8]/20 rounded-full blur-3xl animate-pulse-slow"></div>
-              <div className="absolute bottom-1/3 left-1/3 w-96 h-96 bg-[#e8f0e2]/20 rounded-full blur-3xl animate-pulse-slow animation-delay-1000"></div>
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-[#8aa66e] rounded-full flex justify-center">
-            <div className="w-1 h-2 bg-[#8aa66e] rounded-full mt-2 animate-scroll"></div>
-          </div>
-        </div>
-      </section>
 
       {/* Conditional content based on authentication */}
       {user ? (
+
         // Show Snapshot for logged-in users
         <section id="snapshots" className="scroll-mt-16">
-          <SnapshotPage />
+
+          <SnapshotPage startJourney={startJourney}/>
         </section>
       ) : (
+
         // Show landing page content for non-authenticated users
         <>
+          {/* Hero Section for new users */}
+          <section className="relative min-h-[90vh] flex items-center px-6 py-16 md:py-24 max-w-7xl mx-auto overflow-hidden">
+            {/* Animated background with parallax effect */}
+            <div className="absolute inset-0 z-0">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#e8f0e2]/30 via-transparent to-[#c4d9a8]/30"></div>
+              <div
+                className="w-full h-full bg-cover bg-center opacity-20 scale-110 animate-ken-burns"
+                style={{
+                  backgroundImage: `url('https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
+                }}
+              />
+
+              {/* Floating orbs - more vibrant when logged in */}
+              <div
+                className={`absolute top-20 left-1/4 w-64 h-64 ${user ? "bg-[#6b8e23]/20" : "bg-[#8aa66e]/10"} rounded-full blur-3xl animate-float`}
+              ></div>
+              <div
+                className={`absolute bottom-20 right-1/4 w-80 h-80 ${user ? "bg-[#8aa66e]/20" : "bg-[#a8c686]/10"} rounded-full blur-3xl animate-float animation-delay-2000`}
+              ></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#c4d9a8]/5 rounded-full blur-3xl animate-pulse-slow"></div>
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10 w-full">
+              {/* Left Content */}
+              <div className="space-y-8 animate-fade-up">
+                {/* Personalized Welcome Badge */}
+                <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-[#d4e4c8] shadow-sm animate-fade-up">
+                  <span
+                    className={`w-2 h-2 ${user ? "bg-green-500" : "bg-[#6b8e23]"} rounded-full animate-pulse mr-2`}
+                  ></span>
+                  <span className="text-sm font-medium text-[#556b2f]">
+                    {user ? (
+                      <>✨ Welcome back, {getUserName()}! Ready to reflect?</>
+                    ) : (
+                      <>✨ New: 3-4 Month Check-ins</>
+                    )}
+                  </span>
+                </div>
+
+                {/* Main Heading - Personalized */}
+                <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
+                  {user ? (
+                    <>
+                      <span className="text-gray-800">Continue Your</span>
+                      <br />
+                      <span className="relative">
+                        <span className="bg-gradient-to-r from-[#6b8e23] via-[#8aa66e] to-[#a8c686] bg-clip-text text-transparent relative z-10">
+                          Growth Journey
+                        </span>
+                        <span className="absolute -bottom-2 left-0 w-full h-3 bg-[#c4d9a8]/30 -rotate-1 rounded-full blur-sm"></span>
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-gray-800">Map Your</span>
+                      <br />
+                      <span className="relative">
+                        <span className="bg-gradient-to-r from-[#6b8e23] via-[#8aa66e] to-[#a8c686] bg-clip-text text-transparent relative z-10">
+                          Evolving Self
+                        </span>
+                        <span className="absolute -bottom-2 left-0 w-full h-3 bg-[#c4d9a8]/30 -rotate-1 rounded-full blur-sm"></span>
+                      </span>
+                    </>
+                  )}
+                </h1>
+
+                {/* Description - Personalized */}
+                <p className="text-xl lg:text-2xl text-gray-600 max-w-lg leading-relaxed relative pl-6 border-l-4 border-[#8aa66e] animate-fade-up animation-delay-100">
+                  {user ? (
+                    <>
+                      You've started mapping your journey. Continue where you left
+                      off and watch your perspectives evolve.
+                    </>
+                  ) : (
+                    <>
+                      Watch your perspectives transform over time. LifeMap helps you
+                      track how your thoughts on career, relationships, and purpose
+                      evolve through regular check-ins.
+                    </>
+                  )}
+                </p>
+
+                {/* CTA Buttons - Different for logged-in users */}
+                <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-fade-up animation-delay-200">
+                  <button
+                    onClick={startJourney}
+                    className="group relative bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] text-white px-8 py-4 rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:-translate-y-1"
+                  >
+                    {/* Shine effect */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                      <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/20 animate-shine" />
+                    </div>
+
+                    <span className="relative z-10 flex items-center justify-center text-lg">
+                      {user ? "Continue Reflecting" : "Start Your Journey"}
+                      <ArrowRightIcon className="w-5 h-5 ml-2 transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110" />
+                    </span>
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      document
+                        .getElementById(user ? "snapshots" : "how-it-works")
+                        ?.scrollIntoView({ behavior: "smooth" })
+                    }
+                    className="group relative bg-white/80 backdrop-blur-sm text-gray-700 px-8 py-4 rounded-xl font-semibold border-2 border-[#d4e4c8] hover:border-[#8aa66e] transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden"
+                  >
+                    <span className="relative z-10 flex items-center justify-center text-lg">
+                      {user ? "View Your Snapshot" : "See How It Works"}
+                      <svg
+                        className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-y-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 14l-7 7-7-7m14-6l-7 7-7-7"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+
+                {/* Stats with counters - Personalized for logged-in users */}
+                <div className="flex gap-8 pt-8 animate-fade-up animation-delay-300">
+                  {user ? (
+                    // Personalized stats for logged-in users
+                    <>
+                      <div className="text-center group cursor-pointer">
+                        <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
+                          12
+                        </div>
+                        <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
+                          <HeartIcon className="w-4 h-4 text-[#6b8e23]" />
+                          Reflections
+                        </div>
+                      </div>
+                      <div className="text-center group cursor-pointer">
+                        <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
+                          3
+                        </div>
+                        <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
+                          <ClockIcon className="w-4 h-4 text-[#6b8e23]" />
+                          Check-ins
+                        </div>
+                      </div>
+                      <div className="text-center group cursor-pointer">
+                        <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
+                          85%
+                        </div>
+                        <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
+                          <ChartBarIcon className="w-4 h-4 text-[#6b8e23]" />
+                          Growth
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    // Public stats for non-logged-in users
+                    <>
+                      <div className="text-center group cursor-pointer">
+                        <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
+                          50+
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          Reflection Prompts
+                        </div>
+                      </div>
+                      <div className="text-center group cursor-pointer">
+                        <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
+                          3-4 mo
+                        </div>
+                        <div className="text-sm text-gray-500">Check-in Rhythm</div>
+                      </div>
+                      <div className="text-center group cursor-pointer">
+                        <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
+                          100%
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          Private & Secure
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {/* Quick action for logged-in users */}
+                {user && (
+                  <div className="pt-4 flex items-center gap-3 text-sm text-gray-600">
+                    <BookOpenIcon className="w-5 h-5 text-[#8aa66e]" />
+                    <span>
+                      Last reflection:{" "}
+                      <span className="font-medium text-[#6b8e23]">2 days ago</span>
+                    </span>
+                    <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                    <span>
+                      Next check-in:{" "}
+                      <span className="font-medium text-[#6b8e23]">
+                        in 2 months
+                      </span>
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Right Content - Enhanced Preview Card */}
+              <div className="relative animate-fade-up animation-delay-100">
+                {/* Main Preview Card */}
+                <div className="relative group perspective">
+                  <div
+                    className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-6 border ${user ? "border-[#8aa66e]" : "border-[#d4e4c8]/60"} hover:shadow-3xl hover:-translate-y-2 hover:rotate-1 transition-all duration-500 transform-gpu`}
+                  >
+                    {/* Card Header with animated dots */}
+                    <div className="flex items-center space-x-2 mb-6">
+                      <div className="flex space-x-1.5">
+                        <div className="w-3 h-3 bg-red-400 rounded-full animate-pulse"></div>
+                        <div className="w-3 h-3 bg-yellow-400 rounded-full animate-pulse animation-delay-200"></div>
+                        <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse animation-delay-400"></div>
+                      </div>
+                      <span className="text-sm text-gray-400 ml-2 font-mono">
+                        {user
+                          ? `${getUserName()}'s journey`
+                          : "lifemap.app/dashboard"}
+                      </span>
+
+                      {/* Live indicator */}
+                      <div className="ml-auto flex items-center space-x-1">
+                        <span
+                          className={`w-2 h-2 ${user ? "bg-green-500" : "bg-green-400"} rounded-full animate-pulse`}
+                        ></span>
+                        <span className="text-xs text-gray-400">Live</span>
+                      </div>
+                    </div>
+
+                    {/* Progress Visualization - same as before */}
+                    <div className="space-y-6">
+                      {/* Career Progress */}
+                      <div className="group/item cursor-pointer">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-medium text-gray-700 group-hover/item:text-[#6b8e23] transition-colors">
+                            Career Alignment
+                          </span>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-sm font-semibold text-[#6b8e23]">
+                              ↑ 15%
+                            </span>
+                            <span className="text-xs text-gray-400">
+                              vs last quarter
+                            </span>
+                          </div>
+                        </div>
+                        <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] rounded-full transition-all duration-1000"
+                            style={{ width: "75%" }}
+                          >
+                            <div className="w-full h-full animate-shimmer"></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Work-Life Balance */}
+                      <div className="group/item cursor-pointer">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-medium text-gray-700 group-hover/item:text-[#6b8e23] transition-colors">
+                            Work-Life Balance
+                          </span>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-sm font-semibold text-[#556b2f]">
+                              → Stable
+                            </span>
+                            <span className="text-xs text-gray-400">
+                              consistent
+                            </span>
+                          </div>
+                        </div>
+                        <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-gradient-to-r from-[#8aa66e] to-[#a8c686] rounded-full transition-all duration-1000"
+                            style={{ width: "50%" }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Personal Growth */}
+                      <div className="group/item cursor-pointer">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-medium text-gray-700 group-hover/item:text-[#6b8e23] transition-colors">
+                            Personal Growth
+                          </span>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-sm font-semibold text-[#6b8e23]">
+                              ↑ 28%
+                            </span>
+                            <span className="text-xs text-gray-400">
+                              accelerating
+                            </span>
+                          </div>
+                        </div>
+                        <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-gradient-to-r from-[#a8c686] to-[#c4d9a8] rounded-full transition-all duration-1000"
+                            style={{ width: "82%" }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Next Milestone */}
+                      <div className="mt-6 pt-6 border-t border-[#d4e4c8]/50">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-xs text-gray-400 uppercase tracking-wider">
+                              Next Check-in
+                            </p>
+                            <p className="text-lg font-semibold text-[#6b8e23]">
+                              March 2026
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-xs text-gray-400 uppercase tracking-wider">
+                              Progress
+                            </p>
+                            <p className="text-lg font-semibold text-gray-700">
+                              Day 67/90
+                            </p>
+                          </div>
+                        </div>
+                        {/* Mini progress bar */}
+                        <div className="mt-3 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                          <div className="h-full w-3/4 bg-gradient-to-r from-[#8aa66e] to-[#a8c686] rounded-full"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Floating Stats Cards */}
+                <div className="absolute -top-6 -right-6 bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-4 border border-[#d4e4c8] animate-float animation-delay-1000 hidden lg:block">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-[#e8f0e2] rounded-lg flex items-center justify-center">
+                      <SparklesIcon className="w-5 h-5 text-[#6b8e23]" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-400">
+                        {user ? "Your Streak" : "Reflection Streak"}
+                      </p>
+                      <p className="text-lg font-bold text-[#6b8e23]">
+                        {user ? "8 weeks" : "12 weeks"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="absolute -bottom-6 -left-6 bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-4 border border-[#d4e4c8] animate-float animation-delay-2000 hidden lg:block">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-[#e8f0e2] rounded-lg flex items-center justify-center">
+                      <ChartBarIcon className="w-5 h-5 text-[#6b8e23]" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-400">
+                        {user ? "Your Insights" : "Insights Gained"}
+                      </p>
+                      <p className="text-lg font-bold text-[#6b8e23]">
+                        {user ? "12 patterns" : "24 patterns"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Animated background elements */}
+                <div className="absolute -z-10 inset-0">
+                  <div className="absolute top-1/4 right-1/4 w-72 h-72 bg-[#c4d9a8]/20 rounded-full blur-3xl animate-pulse-slow"></div>
+                  <div className="absolute bottom-1/3 left-1/3 w-96 h-96 bg-[#e8f0e2]/20 rounded-full blur-3xl animate-pulse-slow animation-delay-1000"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Scroll indicator */}
+            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+              <div className="w-6 h-10 border-2 border-[#8aa66e] rounded-full flex justify-center">
+                <div className="w-1 h-2 bg-[#8aa66e] rounded-full mt-2 animate-scroll"></div>
+              </div>
+            </div>
+          </section>
           {/* How It Works Section - updated bg */}
           <section
             id="how-it-works"
@@ -625,13 +628,13 @@ export default function Home() {
                 Join thousands of others on a journey of self-discovery. Free
                 forever.
               </p>
-              <Link
-                href="/register"
+              <button
+                onClick={handleGoogleSignIn}
                 className="bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white px-8 py-4 rounded-lg font-semibold hover:opacity-90 transition shadow-lg hover:shadow-xl inline-flex items-center group text-lg"
               >
                 Create Your Life Map
                 <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition" />
-              </Link>
+              </button>
               <p className="text-sm text-gray-500 mt-4">
                 No credit card required • Cancel anytime
               </p>

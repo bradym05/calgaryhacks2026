@@ -14,6 +14,7 @@ import Footer from "@/components/Footer";
 import DatePicker from "@/components/DatePicker";
 import questions from "@/services/questions.json";
 import { fetchAnswers } from "@/services/getAnswers";
+import BooleanDisplay from "@/components/BooleanDisplay";
 
 function toDate(d: string | Date) {
     return d instanceof Date ? d : new Date(d);
@@ -32,7 +33,7 @@ type AnsweredQuestions = {
     type: string;
 }[];
 
-export default function SnapshotPage() {
+export default function SnapshotPage({startJourney}: {startJourney: () => void}) {
     const { user } = useAuth();
 
     const [answered, setAnswered] = useState<AnsweredQuestions>([]);
@@ -134,36 +135,21 @@ export default function SnapshotPage() {
         );
     }, [answered]);
 
+    const booleanQuestions = useMemo(() => {
+        return Array.from(
+            new Set(answered.filter((a) => a.type == "trueOrFalse").map((a) => a.question))
+        );
+    }, [answered]);
+
+    const freeFormQuestions = useMemo(() => {
+        return Array.from(
+            new Set(answered.filter((a) => a.type == "freeForm").map((a) => a.question))
+        );
+    }, [answered]);
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#f5f0e6] via-[#f8f4ed] to-[#e8f0e2]">
-            {/* Nav */}
-            <nav className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
-                <div className="flex items-center space-x-2">
-                    <div className="w-8 h-8 bg-gradient-to-r from-[#8aa66e] to-[#a8c686] rounded-lg" />
-                    <Link
-                        href="/"
-                        className="text-xl font-bold bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] bg-clip-text text-transparent"
-                    >
-                        LifeMap
-                    </Link>
-                </div>
 
-                <div className="flex items-center space-x-4">
-                    <Link
-                        href="/dashboard"
-                        className="text-gray-700 hover:text-gray-900 px-4 py-2 transition"
-                    >
-                        Dashboard
-                    </Link>
-                    <Link
-                        href="/question"
-                        className="bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white px-5 py-2 rounded-lg hover:opacity-90 transition shadow-md hover:shadow-lg inline-flex items-center"
-                    >
-                        New Check-in
-                        <ArrowRightIcon className="w-4 h-4 ml-2" />
-                    </Link>
-                </div>
-            </nav>
 
             {/* Header */}
             <header className="px-6 pt-10 pb-6 max-w-7xl mx-auto">
@@ -185,10 +171,24 @@ export default function SnapshotPage() {
                         </h1>
 
                         <p className="mt-3 text-lg text-gray-600 max-w-2xl leading-relaxed relative pl-6 border-l-4 border-[#8aa66e]">
-                            Every graph below updates from the same date window—so you can see
-                            what moves together.
+                            Build your charts by answering
+                            more questions
                         </p>
                     </div>
+                    <button
+                        onClick={startJourney}
+                        className="mt-5 group relative bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] text-white px-8 py-4 rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:-translate-y-1"
+                    >
+                        {/* Shine effect */}
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                            <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/20 animate-shine" />
+                        </div>
+
+                        <span className="relative z-10 flex items-center justify-center text-lg">
+                            {user ? "Continue Reflecting" : "Start Your Journey"}
+                            <ArrowRightIcon className="w-5 h-5 ml-2 transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110" />
+                        </span>
+                    </button>
 
                     <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-[#a8c686]/15 rounded-full blur-3xl" />
                     <div className="absolute -top-24 -left-24 w-72 h-72 bg-[#8aa66e]/12 rounded-full blur-3xl" />
@@ -265,6 +265,23 @@ export default function SnapshotPage() {
                                     value: parseInt(a.answer, 10),
                                 }))}
                             height={240}
+                        />
+                    ))}
+                </div>
+
+                {/* Booleans */}
+                <div className="mt-10 space-y-10">
+                    {booleanQuestions.map((q) => (
+                        <BooleanDisplay
+                            key={q}
+                            title={q}
+                            data={answered
+                                .filter((a) => a.question == q)
+                                .map((a) => ({
+                                    date: a.date,
+                                    value: a.answer == "true"
+                                }))
+                            }
                         />
                     ))}
                 </div>
