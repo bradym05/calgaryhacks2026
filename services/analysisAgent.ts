@@ -1,9 +1,7 @@
-"use client";
+"use server";
 
-import OpenAI from "openai";
-import { Question } from "@/types/questions";
+import { OpenAI } from "openai"
 import { ResponseInput } from "openai/resources/responses/responses.mjs";
-
 
 const client = new OpenAI()
 
