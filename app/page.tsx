@@ -58,58 +58,40 @@ export default function Home() {
       {/* Navigation */}
       <nav className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
         <div className="flex items-center space-x-2">
-          {/* <div className="w-8 h-8 bg-gradient-to-r from-[#8aa66e] to-[#a8c686] rounded-lg"></div>
-          <span className="text-xl font-bold bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] bg-clip-text text-transparent">
-            <Link href="/">LifeMap</Link>
-          </span> */}
           <Link href="/" className="flex items-center space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="#6b8e23">
-            <path  d="M11.774 2a10 10 0 1 1-10 10a10 10 0 0 1 10-10m5.5 5.98l-1.112 1.732a4.9 4.9 0 0 1 .535 2.246a4.96 4.96 0 0 1-4.956 4.964h-.009a4.8 4.8 0 0 1-2.232-.535L7.754 17.51a6.826 6.826 0 0 0 9.652-9.34Zm-5.542-2.855a6.833 6.833 0 0 0-6.832 6.82v.013a6.77 6.77 0 0 0 1.332 4.052A8 8 0 0 1 7.4 14.4a10 10 0 0 1 1.187-1.06a8.17 8.17 0 0 1 4.833-1.575a8 8 0 0 1 1.458.132l.284.058a3.428 3.428 0 1 0-6.855-.151v.151a2 2 0 0 0 .015.312l.018.155a8.2 8.2 0 0 0-1.292 1.2a5 5 0 0 1-.283-1.649A4.96 4.96 0 0 1 11.714 7h.008a4.8 4.8 0 0 1 2.235.537l1.732-1.124a6.67 6.67 0 0 0-3.957-1.288m1.722 7.263a7.8 7.8 0 0 0-4.567 1.47a3.43 3.43 0 0 0 6.213-1.291a7.7 7.7 0 0 0-1.646-.179"/></svg>
-            <span className="text-xl font-bold bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] bg-clip-text text-transparent">LifeMap</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="36"
+              height="36"
+              fill="#6b8e23"
+            >
+              <path d="M11.774 2a10 10 0 1 1-10 10a10 10 0 0 1 10-10m5.5 5.98l-1.112 1.732a4.9 4.9 0 0 1 .535 2.246a4.96 4.96 0 0 1-4.956 4.964h-.009a4.8 4.8 0 0 1-2.232-.535L7.754 17.51a6.826 6.826 0 0 0 9.652-9.34Zm-5.542-2.855a6.833 6.833 0 0 0-6.832 6.82v.013a6.77 6.77 0 0 0 1.332 4.052A8 8 0 0 1 7.4 14.4a10 10 0 0 1 1.187-1.06a8.17 8.17 0 0 1 4.833-1.575a8 8 0 0 1 1.458.132l.284.058a3.428 3.428 0 1 0-6.855-.151v.151a2 2 0 0 0 .015.312l.018.155a8.2 8.2 0 0 0-1.292 1.2a5 5 0 0 1-.283-1.649A4.96 4.96 0 0 1 11.714 7h.008a4.8 4.8 0 0 1 2.235.537l1.732-1.124a6.67 6.67 0 0 0-3.957-1.288m1.722 7.263a7.8 7.8 0 0 0-4.567 1.47a3.43 3.43 0 0 0 6.213-1.291a7.7 7.7 0 0 0-1.646-.179" />
+            </svg>
+            <span className="text-xl font-bold bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] bg-clip-text text-transparent">
+              LifeMap
+            </span>
           </Link>
         </div>
         <div className="flex items-center space-x-4">
           {!loading && (
-            <>
-              {user ? (
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-[#d4e4c8]">
-                    <UserCircleIcon className="w-5 h-5 text-[#6b8e23]" />
-                    <span className="text-gray-700 text-sm font-medium">
-                      {getUserName()}
-                    </span>
-                  </div>
-                  <button
-                    onClick={handleLogout}
-                    className="text-gray-600 hover:text-gray-900 px-3 py-2 transition text-sm hover:bg-white/50 rounded-lg"
-                  >
-                    Log out
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={handleGoogleSignIn}
-                  className="bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white px-5 py-2 rounded-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
-                >
-                  Sign in with Google
-                </button>
-              )}
-            </>
+            <button
+              onClick={handleGoogleSignIn}
+              className="bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white px-5 py-2 rounded-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
+            >
+              Sign in with Google
+            </button>
           )}
         </div>
       </nav>
 
-
       {/* Conditional content based on authentication */}
       {user ? (
-
         // Show Snapshot for logged-in users
         <section id="snapshots" className="scroll-mt-16">
-
-          <SnapshotPage startJourney={startJourney}/>
+          <SnapshotPage startJourney={startJourney} />
         </section>
       ) : (
-
         // Show landing page content for non-authenticated users
         <>
           {/* Hero Section for new users */}
@@ -153,45 +135,23 @@ export default function Home() {
 
                 {/* Main Heading - Personalized */}
                 <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-                  {user ? (
-                    <>
-                      <span className="text-gray-800">Continue Your</span>
-                      <br />
-                      <span className="relative">
-                        <span className="bg-gradient-to-r from-[#6b8e23] via-[#8aa66e] to-[#a8c686] bg-clip-text text-transparent relative z-10">
-                          Growth Journey
-                        </span>
-                        <span className="absolute -bottom-2 left-0 w-full h-3 bg-[#c4d9a8]/30 -rotate-1 rounded-full blur-sm"></span>
+                  <>
+                    <span className="text-gray-800">Map Your</span>
+                    <br />
+                    <span className="relative">
+                      <span className="bg-gradient-to-r from-[#6b8e23] via-[#8aa66e] to-[#a8c686] bg-clip-text text-transparent relative z-10">
+                        Evolving Self
                       </span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="text-gray-800">Map Your</span>
-                      <br />
-                      <span className="relative">
-                        <span className="bg-gradient-to-r from-[#6b8e23] via-[#8aa66e] to-[#a8c686] bg-clip-text text-transparent relative z-10">
-                          Evolving Self
-                        </span>
-                        <span className="absolute -bottom-2 left-0 w-full h-3 bg-[#c4d9a8]/30 -rotate-1 rounded-full blur-sm"></span>
-                      </span>
-                    </>
-                  )}
+                      <span className="absolute -bottom-2 left-0 w-full h-3 bg-[#c4d9a8]/30 -rotate-1 rounded-full blur-sm"></span>
+                    </span>
+                  </>
                 </h1>
 
                 {/* Description - Personalized */}
                 <p className="text-xl lg:text-2xl text-gray-600 max-w-lg leading-relaxed relative pl-6 border-l-4 border-[#8aa66e] animate-fade-up animation-delay-100">
-                  {user ? (
-                    <>
-                      You've started mapping your journey. Continue where you left
-                      off and watch your perspectives evolve.
-                    </>
-                  ) : (
-                    <>
-                      Watch your perspectives transform over time. LifeMap helps you
-                      track how your thoughts on career, relationships, and purpose
-                      evolve through regular check-ins.
-                    </>
-                  )}
+                  Watch your perspectives transform over time. LifeMap helps you
+                  track how your thoughts on career, relationships, and purpose
+                  evolve through regular check-ins.
                 </p>
 
                 {/* CTA Buttons - Different for logged-in users */}
@@ -200,11 +160,6 @@ export default function Home() {
                     onClick={startJourney}
                     className="group relative bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] text-white px-8 py-4 rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:-translate-y-1"
                   >
-                    {/* Shine effect */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                      <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/20 animate-shine" />
-                    </div>
-
                     <span className="relative z-10 flex items-center justify-center text-lg">
                       {user ? "Continue Reflecting" : "Start Your Journey"}
                       <ArrowRightIcon className="w-5 h-5 ml-2 transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110" />
@@ -240,64 +195,28 @@ export default function Home() {
 
                 {/* Stats with counters - Personalized for logged-in users */}
                 <div className="flex gap-8 pt-8 animate-fade-up animation-delay-300">
-                  {user ? (
-                    // Personalized stats for logged-in users
-                    <>
-                      <div className="text-center group cursor-pointer">
-                        <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                          12
-                        </div>
-                        <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
-                          <HeartIcon className="w-4 h-4 text-[#6b8e23]" />
-                          Reflections
-                        </div>
-                      </div>
-                      <div className="text-center group cursor-pointer">
-                        <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                          3
-                        </div>
-                        <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
-                          <ClockIcon className="w-4 h-4 text-[#6b8e23]" />
-                          Check-ins
-                        </div>
-                      </div>
-                      <div className="text-center group cursor-pointer">
-                        <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                          85%
-                        </div>
-                        <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
-                          <ChartBarIcon className="w-4 h-4 text-[#6b8e23]" />
-                          Growth
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    // Public stats for non-logged-in users
-                    <>
-                      <div className="text-center group cursor-pointer">
-                        <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                          50+
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          Reflection Prompts
-                        </div>
-                      </div>
-                      <div className="text-center group cursor-pointer">
-                        <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                          3-4 mo
-                        </div>
-                        <div className="text-sm text-gray-500">Check-in Rhythm</div>
-                      </div>
-                      <div className="text-center group cursor-pointer">
-                        <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                          100%
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          Private & Secure
-                        </div>
-                      </div>
-                    </>
-                  )}
+                  <div className="text-center group cursor-pointer">
+                    <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
+                      50+
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      Reflection Prompts
+                    </div>
+                  </div>
+                  <div className="text-center group cursor-pointer">
+                    <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
+                      3-4 mo
+                    </div>
+                    <div className="text-sm text-gray-500">Check-in Rhythm</div>
+                  </div>
+                  <div className="text-center group cursor-pointer">
+                    <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
+                      100%
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      Private & Secure
+                    </div>
+                  </div>
                 </div>
 
                 {/* Quick action for logged-in users */}
@@ -306,7 +225,9 @@ export default function Home() {
                     <BookOpenIcon className="w-5 h-5 text-[#8aa66e]" />
                     <span>
                       Last reflection:{" "}
-                      <span className="font-medium text-[#6b8e23]">2 days ago</span>
+                      <span className="font-medium text-[#6b8e23]">
+                        2 days ago
+                      </span>
                     </span>
                     <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
                     <span>
