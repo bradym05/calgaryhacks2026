@@ -7,11 +7,13 @@
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
 import { Question } from "@/types/questions";
-import RatingQuestion from "@/components/RatingQuestion";
-import questions from "@/services/questions.json";
-import FreeFormQuestion from "@/components/FreeFormQuestion";
-import BooleanQuestion from "@/components/BooleanQuestion";
-import AnswerDisplay from "@/components/answerDisplay";
+import RatingQuestion from "../../components/RatingQuestion";
+import questions from "../../services/questions.json";
+import FreeFormQuestion from "../../components/FreeFormQuestion";
+import BooleanQuestion from "../../components/BooleanQuestion";
+import AnswerDisplay from "../../components/answerDisplay";
+import InsightModal from "../../components/InsightModal";
+import { fetchAnsweredCount } from "../../services/getAnsweredCount";
 import { addResponseToQuestion } from "@/services/addNewAnswer";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -33,6 +35,9 @@ export default function QuestionPage({ params }: PageProps) {
   const [questionId, setQuestionId] = useState<string>();
   const [submitting, setSubmitting] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [showInsights, setShowInsights] = useState(false);
+  const [openedFromBack, setOpenedFromBack] = useState(false);
+  const totalQuestions = Object.keys(questions).length;
 
   // Get question on page hydrated
   useEffect(() => {
@@ -52,7 +57,7 @@ export default function QuestionPage({ params }: PageProps) {
   }, [router.isReady, router.query.id]);
 
   // Handle submission
-  async function onSubmit(e: SubmitEvent) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     // Don't refresh
     e.preventDefault();
     // Update state
@@ -68,9 +73,17 @@ export default function QuestionPage({ params }: PageProps) {
           response.trim(),
         );
         setResponse("");
-        // Navigate to next question
-        const nextId = Number(questionId) + 1;
-        router.push(nextId.toString());
+        // After saving, check how many questions the user has answered
+        const answered = await fetchAnsweredCount(user?.uid || "default");
+        if (answered >= totalQuestions) {
+          // show insights before sending user back home
+          setOpenedFromBack(false);
+          setShowInsights(true);
+        } else {
+          // Navigate to next question
+          const nextId = Number(questionId) + 1;
+          router.push(nextId.toString());
+        }
       } catch (error) {
         console.error("Error submitting response: ", error);
       } finally {
@@ -98,13 +111,14 @@ export default function QuestionPage({ params }: PageProps) {
       <main className="min-h-screen bg-gradient-to-br from-[#f5f0e6] via-[#f8f4ed] to-[#e8f0e2]">
         {/* Back button */}
         <div className="absolute top-4 left-4 md:top-6 md:left-6">
-          <Link
-            href="/"
+          <button
+            type="button"
+            onClick={() => { setOpenedFromBack(true); setShowInsights(true); }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 backdrop-blur-sm border border-[#d4e4c8]/60 text-gray-700 hover:bg-white hover:border-[#8aa66e]/50 transition-all duration-200 shadow-sm hover:shadow group"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
             <span className="text-sm font-medium">Back to Home</span>
-          </Link>
+          </button>
         </div>
 
         <div className="mx-auto max-w-3xl px-5 py-12 md:py-16">
@@ -135,6 +149,15 @@ export default function QuestionPage({ params }: PageProps) {
                 <AnswerDisplay questionId={questionId || "default"} />
               </div>
             )} */}
+
+            <InsightModal
+              questionId={questionId || "default"}
+              open={showInsights}
+              onClose={() => {
+                setShowInsights(false);
+                if (openedFromBack) router.push("/");
+              }}
+            />
           </div>
 
           <section className="rounded-2xl md:rounded-3xl border border-[#d4e4c8]/60 bg-white/80 backdrop-blur-sm shadow-xl shadow-[#c4d9a8]/25 p-7 md:p-10">
@@ -192,12 +215,6 @@ export default function QuestionPage({ params }: PageProps) {
             {showHistory && (
               <AnswerDisplay questionId={questionId || "default"} />
             )}
-
-            {/* {showHistory && (
-                <div className="mt-4">
-                  <AnswerDisplay questionId={questionId || "default"} />
-                </div>
-              )} */}
           </div>
 
           <footer className="mt-10 text-center text-sm text-gray-500/80">
