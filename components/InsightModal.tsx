@@ -6,6 +6,7 @@ import { db } from "@/services/firebase";
 import { useAuth } from "@/services/AuthContext";
 
 type Props = {
+  user: { uid: string } | null; // pass user as prop to avoid coupling with AuthContext
   questionId: string;
   open: boolean;
   onClose: () => void;
@@ -18,8 +19,8 @@ type AnswerItem = {
   date: string;
 };
 
-export default function InsightModal({ questionId, open, onClose }: Props) {
-  const { user } = useAuth();
+export default function InsightModal({ user, questionId, open, onClose }: Props) {
+  // const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [answers, setAnswers] = useState<AnswerItem[]>([]);
 

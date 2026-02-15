@@ -7,6 +7,7 @@ import { useAuth } from "@/services/AuthContext";
 
 type AnswerDisplayProps = {
   questionId: string;
+  user?: { uid: string } | null; // pass user as prop to avoid coupling with AuthContext
 };
 
 type AnswerItem = {
@@ -25,12 +26,12 @@ function formatDateKey(dateStr: string) {
   }
 }
 
-export default function AnswerDisplay({ questionId }: AnswerDisplayProps) {
+export default function AnswerDisplay({user, questionId }: AnswerDisplayProps) {
   const [answers, setAnswers] = useState<AnswerItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedDates, setExpandedDates] = useState<Record<string, boolean>>({});
 
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   useEffect(() => {
     let mounted = true;
@@ -39,15 +40,15 @@ export default function AnswerDisplay({ questionId }: AnswerDisplayProps) {
       if (!mounted) return;
       if (success && Array.isArray(decodedSortedAnswers)) {
         const items: AnswerItem[] = decodedSortedAnswers.map((s: string) => {
-          // split on first ':' to preserve colons in response
+
           const idx = s.indexOf(":");
           const text = idx >= 0 ? s.slice(0, idx) : s;
           const date = idx >= 0 ? s.slice(idx + 1) : "";
           const time = date ? new Date(date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "";
           return { raw: s, text, date, time };
         });
-        setAnswers(items.reverse()); // show newest first
-        // auto-expand the most recent date group
+        setAnswers(items.reverse()); 
+
         if (items.length > 0) {
           const key = items[0].date ? new Date(items[0].date).toDateString() : "Unknown";
           setExpandedDates({ [key]: true });

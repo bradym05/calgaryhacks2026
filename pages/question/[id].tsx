@@ -57,7 +57,7 @@ export default function QuestionPage({ params }: PageProps) {
   }, [router.isReady, router.query.id]);
 
   // Handle submission
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     // Don't refresh
     e.preventDefault();
     // Update state
@@ -178,6 +178,7 @@ export default function QuestionPage({ params }: PageProps) {
             )} */}
 
             <InsightModal
+              user={user}
               questionId={questionId || "default"}
               open={showInsights}
               onClose={() => {

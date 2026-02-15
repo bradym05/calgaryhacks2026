@@ -1,7 +1,7 @@
 import { doc, getDoc, setDoc } from "firebase/firestore/lite";
 import { db } from "./firebase";
 
-export const fetchAnswers = async (questionId: string, userId: string) => {
+export const fetchAnswers = async (userId: string,questionId:string) => {
   let success = false;
   let decodedSortedAnswers;
   try {
