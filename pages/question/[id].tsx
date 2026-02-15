@@ -27,6 +27,7 @@ export default function QuestionPage({ params }: PageProps) {
   const [question, setQuestion] = useState<Question>();
   const [questionId, setQuestionId] = useState<string>();
   const [submitting, setSubmitting] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
 
   // Get question on page hydrated
   useEffect(() => {
@@ -38,33 +39,49 @@ export default function QuestionPage({ params }: PageProps) {
       // Check if id is a valid string
       if (typeof router.query.id == "string") {
         setQuestionId(router.query.id);
-        setQuestion(questions[router.query.id]);
+        // router.query.id is a string but questions is typed with specific keys
+        // Cast to any to avoid TS complaint here
+        setQuestion((questions as any)[router.query.id]);
       }
     }
-  }, [router.isReady]);
+  }, [router.isReady, router.query.id]);
 
   // Handle submission
-  async function onSubmit(e: SubmitEvent) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     // Don't refresh
-    e.preventDefault()
+    e.preventDefault();
     // Update state
-    setSubmitting(true)
+    setSubmitting(true);
     // Validate response
     if (response.trim().length > 0) {
       // Add response to database
       setSubmitting(true);
-      try{
+      try {
         await addResponseToQuestion("user1", questionId || "default", response.trim());
         setResponse("");
-        // Navigate to next question
-        const nextId = Number(questionId) + 1;
-        router.push(nextId.toString());
-      }catch(error){
+        // Navigate to a random next question (excluding current)
+        const nextRandom = getRandomQuestionId(questionId);
+        router.push(`/question/${nextRandom}`);
+      } catch (error) {
         console.error("Error submitting response: ", error);
-      }finally{
+      } finally {
         setSubmitting(false);
       }
     }
+  }
+
+  // Pick a random question id from the questions list, optionally excluding the current id
+  function getRandomQuestionId(excludeId?: string) {
+    const keys = Object.keys(questions);
+    const choices = excludeId ? keys.filter((k) => k !== excludeId) : keys;
+    if (choices.length === 0) return excludeId ?? keys[0];
+    const idx = Math.floor(Math.random() * choices.length);
+    return choices[idx];
+  }
+
+  function handleSkip() {
+    const nextRandom = getRandomQuestionId(questionId);
+    router.push(`/question/${nextRandom}`);
   }
 
   return (
@@ -84,8 +101,21 @@ export default function QuestionPage({ params }: PageProps) {
               Take your time • Be honest with yourself
             </p>
           </header>
-              <AnswerDisplay questionId={questionId || "default"} />
-
+          <div className="mb-6">
+            <button
+              type="button"
+              onClick={() => setShowHistory((s) => !s)}
+              className="inline-flex items-center px-3 py-1.5 rounded-full bg-[#e8f0e2] text-[#556b2f] text-sm font-medium border border-[#d4e4c8]/70 hover:bg-[#e0ead0]"
+            >
+              {showHistory ? "Hide history" : "Show history"}
+            </button>
+{/* 
+            {showHistory && (
+              <div className="mt-4">
+                <AnswerDisplay questionId={questionId || "default"} />
+              </div>
+            )} */}
+          </div>
 
           <section className="rounded-2xl md:rounded-3xl border border-[#d4e4c8]/60 bg-white/80 backdrop-blur-sm shadow-xl shadow-[#c4d9a8]/25 p-7 md:p-10">
             <form onSubmit={onSubmit}>
@@ -112,14 +142,13 @@ export default function QuestionPage({ params }: PageProps) {
                   setResponse={setResponse}
                 />
               )}
-              
 
               <div className="mt-8 flex flex-col sm:flex-row items-center justify-end gap-4">
                 {/* SKIP BUTTON */}
                 <button
                   type="button"
                   className="w-full sm:w-auto px-7 py-3 rounded-xl border border-gray-300 bg-white/90 text-gray-700 font-medium hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
-                  // onClick = {()=>router.push("question/" + (Number(questionId) + 1).toString())}
+                  onClick={handleSkip}
                 >
                   Skip for now
                 </button>
@@ -135,6 +164,17 @@ export default function QuestionPage({ params }: PageProps) {
               </div>
             </form>
           </section>
+          <div className="mt-6">
+            { showHistory &&(
+              <AnswerDisplay questionId={questionId || "default"} />
+            )}
+
+              {/* {showHistory && (
+                <div className="mt-4">
+                  <AnswerDisplay questionId={questionId || "default"} />
+                </div>
+              )} */}
+            </div>
 
           <footer className="mt-10 text-center text-sm text-gray-500/80">
             Tip: Your answers are private • You can review and update them later
