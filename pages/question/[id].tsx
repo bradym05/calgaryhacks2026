@@ -57,7 +57,11 @@ export default function QuestionPage({ params }: PageProps) {
       // Add response to database
       setSubmitting(true);
       try {
-        await addResponseToQuestion("user1", questionId || "default", response.trim());
+        await addResponseToQuestion(
+          "user1",
+          questionId || "default",
+          response.trim(),
+        );
         setResponse("");
         // Navigate to a random next question (excluding current)
         const nextRandom = getRandomQuestionId(questionId);
@@ -109,7 +113,7 @@ export default function QuestionPage({ params }: PageProps) {
             >
               {showHistory ? "Hide history" : "Show history"}
             </button>
-{/* 
+            {/* 
             {showHistory && (
               <div className="mt-4">
                 <AnswerDisplay questionId={questionId || "default"} />
@@ -127,14 +131,13 @@ export default function QuestionPage({ params }: PageProps) {
                   setResponse={setResponse}
                 />
               )}
-              {
-                question.type == "trueOrFalse" && (
-                  <BooleanQuestion
-                    question={question.question}
-                    response={response}
-                    setResponse={setResponse}
-                  />
-                )}
+              {question.type == "trueOrFalse" && (
+                <BooleanQuestion
+                  question={question.question}
+                  response={response}
+                  setResponse={setResponse}
+                />
+              )}
               {question.type == "rating" && (
                 <RatingQuestion
                   question={question.question}
@@ -156,8 +159,12 @@ export default function QuestionPage({ params }: PageProps) {
                 {/* SUBMIT BUTTON */}
                 <button
                   type="submit"
-                  className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white font-semibold shadow-md hover:shadow-lg hover:opacity-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#8aa66e]/50 focus:ring-offset-2"
-                  // disabled={submitting || response.length === 0}
+                  className={`w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#8aa66e]/50 focus:ring-offset-2 ${
+                    submitting || response.length === 0
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed hover:shadow-md opacity-70"
+                      : "bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white hover:shadow-lg hover:opacity-95"
+                  }`}
+                  disabled={submitting || response.length === 0}
                 >
                   {submitting ? "Submitting..." : "Save & Continue"}
                 </button>
@@ -165,24 +172,22 @@ export default function QuestionPage({ params }: PageProps) {
             </form>
           </section>
           <div className="mt-6">
-            { showHistory &&(
+            {showHistory && (
               <AnswerDisplay questionId={questionId || "default"} />
             )}
 
-              {/* {showHistory && (
+            {/* {showHistory && (
                 <div className="mt-4">
                   <AnswerDisplay questionId={questionId || "default"} />
                 </div>
               )} */}
-            </div>
+          </div>
 
           <footer className="mt-10 text-center text-sm text-gray-500/80">
             Tip: Your answers are private • You can review and update them later
             from your profile
           </footer>
-
         </div>
-
       </main>
     )
   );
