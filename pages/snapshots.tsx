@@ -12,6 +12,9 @@ import {
 import GraphDisplay from "@/components/GraphDisplay";
 import Footer from "@/components/Footer";
 import DatePicker from "@/components/DatePicker";
+import { Question } from "@/types/questions";
+import questions from "@/services/questions.json";
+import { fetchAnswers } from "@/services/getAnswers";
 
 type Point = { date: string | Date; value: number };
 
@@ -26,6 +29,31 @@ function toISODate(d: Date) {
 }
 
 export default function SnapshotPage() {
+
+    const answered = {
+        rating: [],
+        freeForm: [],
+        trueOrFalse: []
+    }
+
+    // ANSWER PARSING
+    Object.entries(questions).forEach(([questionId, question]) => {
+        // Get answers (if any)
+        fetchAnswers(questionId).then(({ success, decodedSortedAnswers }) => {
+            if (decodedSortedAnswers && success) {
+                // Iterate over answers
+                for (let rawAnswerString of decodedSortedAnswers) {
+                    // Get date
+                    let splitAnswer = rawAnswerString.split(":")
+                    let answerInfo = {
+                        value: splitAnswer[0],
+                        date: toDate(splitAnswer[1])
+                    }
+                    console.log(answerInfo)
+                }
+            }
+        });
+    })
 
     // TODO: Get min and max date from all data
     const { minDate, maxDate } = useMemo(() => {
@@ -187,7 +215,7 @@ export default function SnapshotPage() {
                                             "bg-white/80 backdrop-blur-sm text-gray-700 px-4 py-3 rounded-xl font-semibold border-2 border-[#d4e4c8] hover:border-[#8aa66e] transition shadow-sm hover:shadow-md"
                                     }
                                 >
-                                    {presetInfo.days == 365 ? "YTD" : `Last ${presetInfo.days} days` }
+                                    {presetInfo.days == 365 ? "YTD" : `Last ${presetInfo.days} days`}
                                 </button>
                             ))}
                         </div>

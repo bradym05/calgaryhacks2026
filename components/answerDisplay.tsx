@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { db } from "../services/firebase";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore/lite";
 import { addResponseToQuestion } from "@/services/addNewAnswer";
+import { fetchAnswers } from "@/services/getAnswers";
 
 type AnswerDisplayProps = {
   questionId: string;
@@ -12,38 +13,14 @@ export default function AnswerDisplay({ questionId }: AnswerDisplayProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchAnswers = async () => {
-      try {
-        // Reference the specific DOCUMENT (user1 -> questionId)
-        const docRef = doc(db, "user1", questionId);
-        const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-
-          // Convert the object fields into a sorted array
-          const sortedAnswers = Object.keys(data)
-            .sort((a, b) => Number(a) - Number(b)) // Ensure numeric order
-            .map((key) => data[key]);
-
-          // Base64 decode the answers, but not the date part
-          const decodedSortedAnswers = sortedAnswers.map((item) => {
-            const [encodedResponse, date] = item.split(":");
-            const decodedResponse = atob(encodedResponse);
-            return `${decodedResponse}:${date}`;
-          });
-          setAnswers(decodedSortedAnswers);
-        } else {
-          console.log("No such document!");
-        }
-      } catch (error) {
-        console.error("Error fetching answers:", error);
-      } finally {
-        setLoading(false);
+    fetchAnswers(questionId).then(({success, decodedSortedAnswers}) => {
+      if (decodedSortedAnswers && success) {
+        setAnswers(decodedSortedAnswers)
       }
-    };
+    });
 
-    fetchAnswers();
+    setLoading(false)
   }, [questionId]); // Add questionId as a dependency
 
   if (loading) return <p>Loading answers...</p>;
