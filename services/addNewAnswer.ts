@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from "firebase/firestore/lite";
+import { collection, doc, getDoc, setDoc } from "firebase/firestore/lite";
 import { db } from "./firebase";
 
 export const addResponseToQuestion = async (
@@ -9,7 +9,9 @@ export const addResponseToQuestion = async (
   responseValue = btoa(responseValue); // Base64 Encoding
   responseValue += ":" + new Date().toISOString().split("T")[0]; // Add :YYYY-MM-DD
   try {
-    const docRef = doc(db, userId, questionId);
+    console.log("db:", db);
+
+    const docRef = doc(collection(db, userId), questionId);
     const docSnap = await getDoc(docRef);
 
     let nextFieldNumber = "1";

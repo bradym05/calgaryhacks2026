@@ -15,6 +15,7 @@ import AnswerDisplay from "@/components/answerDisplay";
 import { addResponseToQuestion } from "@/services/addNewAnswer";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { useAuth } from "@/services/AuthContext";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -23,6 +24,8 @@ type PageProps = {
 export default function QuestionPage({ params }: PageProps) {
   // Use a try/catch or a check to ensure params exists
   const router = useRouter();
+
+  const { user } = useAuth();
 
   // States
   const [response, setResponse] = useState("");
@@ -49,7 +52,7 @@ export default function QuestionPage({ params }: PageProps) {
   }, [router.isReady, router.query.id]);
 
   // Handle submission
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: SubmitEvent) {
     // Don't refresh
     e.preventDefault();
     // Update state
@@ -60,14 +63,14 @@ export default function QuestionPage({ params }: PageProps) {
       setSubmitting(true);
       try {
         await addResponseToQuestion(
-          "user1",
+          user?.uid || "default",
           questionId || "default",
           response.trim(),
         );
         setResponse("");
-        // Navigate to a random next question (excluding current)
-        const nextRandom = getRandomQuestionId(questionId);
-        router.push(`/question/${nextRandom}`);
+        // Navigate to next question
+        const nextId = Number(questionId) + 1;
+        router.push(nextId.toString());
       } catch (error) {
         console.error("Error submitting response: ", error);
       } finally {

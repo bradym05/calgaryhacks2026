@@ -9,21 +9,38 @@ import {
   ShieldCheckIcon,
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/services/AuthContext";
 import questions from "../services/questions.json";
 import Footer from "@/components/Footer";
 import LifeMapTrendGraph from "@/components/GraphDisplay";
 
 export default function Home() {
   const router = useRouter();
+  const { user, logOut, signInWithGoogle, loading } = useAuth();
 
   const startJourney = () => {
     // 1. Pick a random question from the array
     const questionKeys = Object.keys(questions);
     const randomIndex = Math.floor(Math.random() * questionKeys.length);
     const randomKey = questionKeys[randomIndex];
-
     // 2. Navigate to /[id].tsx (e.g., /101)
     router.push(`/question/${randomKey}`);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logOut();
+    } catch (error) {
+      console.error("Failed to log out:", error);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      console.error("Failed to sign in:", error);
+    }
   };
 
   return (
@@ -37,18 +54,28 @@ export default function Home() {
           </span>
         </div>
         <div className="flex items-center space-x-4">
-          <Link
-            href="/login"
-            className="text-gray-700 hover:text-gray-900 px-4 py-2 transition"
-          >
-            Log in
-          </Link>
-          <Link
-            href="/register"
-            className="bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white px-5 py-2 rounded-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
-          >
-            Sign up free
-          </Link>
+          {!loading && (
+            <>
+              {user ? (
+                <>
+                  <span className="text-gray-700 text-sm">{user.email}</span>
+                  <button
+                    onClick={handleLogout}
+                    className="text-gray-700 hover:text-gray-900 px-4 py-2 transition"
+                  >
+                    Log out
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={handleGoogleSignIn}
+                  className="bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white px-5 py-2 rounded-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
+                >
+                  Sign in with Google
+                </button>
+              )}
+            </>
+          )}
         </div>
       </nav>
       {/* Hero Section */}
