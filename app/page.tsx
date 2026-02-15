@@ -7,6 +7,9 @@ import {
   ChartBarIcon,
   ClockIcon,
   ShieldCheckIcon,
+  UserCircleIcon,
+  HeartIcon,
+  BookOpenIcon,
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/services/AuthContext";
@@ -44,6 +47,12 @@ export default function Home() {
     }
   };
 
+  // Get user's first name from email (fallback to "there")
+  const getUserName = () => {
+    if (!user?.email) return "there";
+    return user.email.split("@")[0].split(".")[0] || "there";
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f5f0e6] via-[#f8f4ed] to-[#e8f0e2]">
       {/* Navigation */}
@@ -58,15 +67,20 @@ export default function Home() {
           {!loading && (
             <>
               {user ? (
-                <>
-                  <span className="text-gray-700 text-sm">{user.email}</span>
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-[#d4e4c8]">
+                    <UserCircleIcon className="w-5 h-5 text-[#6b8e23]" />
+                    <span className="text-gray-700 text-sm font-medium">
+                      {getUserName()}
+                    </span>
+                  </div>
                   <button
                     onClick={handleLogout}
-                    className="text-gray-700 hover:text-gray-900 px-4 py-2 transition"
+                    className="text-gray-600 hover:text-gray-900 px-3 py-2 transition text-sm hover:bg-white/50 rounded-lg"
                   >
                     Log out
                   </button>
-                </>
+                </div>
               ) : (
                 <button
                   onClick={handleGoogleSignIn}
@@ -80,7 +94,7 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Hero Section - Always shown */}
+      {/* Hero Section - Personalized for logged-in users */}
       <section className="relative min-h-[90vh] flex items-center px-6 py-16 md:py-24 max-w-7xl mx-auto overflow-hidden">
         {/* Animated background with parallax effect */}
         <div className="absolute inset-0 z-0">
@@ -92,44 +106,77 @@ export default function Home() {
             }}
           />
 
-          {/* Floating orbs */}
-          <div className="absolute top-20 left-1/4 w-64 h-64 bg-[#8aa66e]/10 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-[#a8c686]/10 rounded-full blur-3xl animate-float animation-delay-2000"></div>
+          {/* Floating orbs - more vibrant when logged in */}
+          <div
+            className={`absolute top-20 left-1/4 w-64 h-64 ${user ? "bg-[#6b8e23]/20" : "bg-[#8aa66e]/10"} rounded-full blur-3xl animate-float`}
+          ></div>
+          <div
+            className={`absolute bottom-20 right-1/4 w-80 h-80 ${user ? "bg-[#8aa66e]/20" : "bg-[#a8c686]/10"} rounded-full blur-3xl animate-float animation-delay-2000`}
+          ></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#c4d9a8]/5 rounded-full blur-3xl animate-pulse-slow"></div>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10 w-full">
           {/* Left Content */}
           <div className="space-y-8 animate-fade-up">
-            {/* Badge */}
+            {/* Personalized Welcome Badge */}
             <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-[#d4e4c8] shadow-sm animate-fade-up">
-              <span className="w-2 h-2 bg-[#6b8e23] rounded-full animate-pulse mr-2"></span>
+              <span
+                className={`w-2 h-2 ${user ? "bg-green-500" : "bg-[#6b8e23]"} rounded-full animate-pulse mr-2`}
+              ></span>
               <span className="text-sm font-medium text-[#556b2f]">
-                ✨ New: 3-4 Month Check-ins
+                {user ? (
+                  <>✨ Welcome back, {getUserName()}! Ready to reflect?</>
+                ) : (
+                  <>✨ New: 3-4 Month Check-ins</>
+                )}
               </span>
             </div>
 
-            {/* Main Heading */}
+            {/* Main Heading - Personalized */}
             <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-              <span className="text-gray-800">Map Your</span>
-              <br />
-              <span className="relative">
-                <span className="bg-gradient-to-r from-[#6b8e23] via-[#8aa66e] to-[#a8c686] bg-clip-text text-transparent relative z-10">
-                  Evolving Self
-                </span>
-                {/* Underline animation */}
-                <span className="absolute -bottom-2 left-0 w-full h-3 bg-[#c4d9a8]/30 -rotate-1 rounded-full blur-sm"></span>
-              </span>
+              {user ? (
+                <>
+                  <span className="text-gray-800">Continue Your</span>
+                  <br />
+                  <span className="relative">
+                    <span className="bg-gradient-to-r from-[#6b8e23] via-[#8aa66e] to-[#a8c686] bg-clip-text text-transparent relative z-10">
+                      Growth Journey
+                    </span>
+                    <span className="absolute -bottom-2 left-0 w-full h-3 bg-[#c4d9a8]/30 -rotate-1 rounded-full blur-sm"></span>
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="text-gray-800">Map Your</span>
+                  <br />
+                  <span className="relative">
+                    <span className="bg-gradient-to-r from-[#6b8e23] via-[#8aa66e] to-[#a8c686] bg-clip-text text-transparent relative z-10">
+                      Evolving Self
+                    </span>
+                    <span className="absolute -bottom-2 left-0 w-full h-3 bg-[#c4d9a8]/30 -rotate-1 rounded-full blur-sm"></span>
+                  </span>
+                </>
+              )}
             </h1>
 
-            {/* Description with animated gradient border */}
+            {/* Description - Personalized */}
             <p className="text-xl lg:text-2xl text-gray-600 max-w-lg leading-relaxed relative pl-6 border-l-4 border-[#8aa66e] animate-fade-up animation-delay-100">
-              Watch your perspectives transform over time. LifeMap helps you
-              track how your thoughts on career, relationships, and purpose
-              evolve through regular check-ins.
+              {user ? (
+                <>
+                  You've started mapping your journey. Continue where you left
+                  off and watch your perspectives evolve.
+                </>
+              ) : (
+                <>
+                  Watch your perspectives transform over time. LifeMap helps you
+                  track how your thoughts on career, relationships, and purpose
+                  evolve through regular check-ins.
+                </>
+              )}
             </p>
 
-            {/* CTA Buttons with micro-interactions */}
+            {/* CTA Buttons - Different for logged-in users */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-fade-up animation-delay-200">
               <button
                 onClick={startJourney}
@@ -141,7 +188,7 @@ export default function Home() {
                 </div>
 
                 <span className="relative z-10 flex items-center justify-center text-lg">
-                  Start Your Journey
+                  {user ? "Continue Reflecting" : "Start Your Journey"}
                   <ArrowRightIcon className="w-5 h-5 ml-2 transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110" />
                 </span>
               </button>
@@ -173,34 +220,94 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Stats with counters */}
+            {/* Stats with counters - Personalized for logged-in users */}
             <div className="flex gap-8 pt-8 animate-fade-up animation-delay-300">
-              <div className="text-center group cursor-pointer">
-                <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                  10K+
-                </div>
-                <div className="text-sm text-gray-500">Moments Captured</div>
-              </div>
-              <div className="text-center group cursor-pointer">
-                <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                  85%
-                </div>
-                <div className="text-sm text-gray-500">Report Growth</div>
-              </div>
-              <div className="text-center group cursor-pointer">
-                <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
-                  24/7
-                </div>
-                <div className="text-sm text-gray-500">Your Timeline</div>
-              </div>
+              {user ? (
+                // Personalized stats for logged-in users
+                <>
+                  <div className="text-center group cursor-pointer">
+                    <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
+                      12
+                    </div>
+                    <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
+                      <HeartIcon className="w-4 h-4 text-[#6b8e23]" />
+                      Reflections
+                    </div>
+                  </div>
+                  <div className="text-center group cursor-pointer">
+                    <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
+                      3
+                    </div>
+                    <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
+                      <ClockIcon className="w-4 h-4 text-[#6b8e23]" />
+                      Check-ins
+                    </div>
+                  </div>
+                  <div className="text-center group cursor-pointer">
+                    <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
+                      85%
+                    </div>
+                    <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
+                      <ChartBarIcon className="w-4 h-4 text-[#6b8e23]" />
+                      Growth
+                    </div>
+                  </div>
+                </>
+              ) : (
+                // Public stats for non-logged-in users
+                <>
+                  <div className="text-center group cursor-pointer">
+                    <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
+                      50+
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      Reflection Prompts
+                    </div>
+                  </div>
+                  <div className="text-center group cursor-pointer">
+                    <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
+                      3-4 mo
+                    </div>
+                    <div className="text-sm text-gray-500">Check-in Rhythm</div>
+                  </div>
+                  <div className="text-center group cursor-pointer">
+                    <div className="text-3xl font-bold text-[#6b8e23] group-hover:scale-110 transition-transform">
+                      100%
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      Private & Secure
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
+
+            {/* Quick action for logged-in users */}
+            {user && (
+              <div className="pt-4 flex items-center gap-3 text-sm text-gray-600">
+                <BookOpenIcon className="w-5 h-5 text-[#8aa66e]" />
+                <span>
+                  Last reflection:{" "}
+                  <span className="font-medium text-[#6b8e23]">2 days ago</span>
+                </span>
+                <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                <span>
+                  Next check-in:{" "}
+                  <span className="font-medium text-[#6b8e23]">
+                    in 2 months
+                  </span>
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Right Content - Enhanced Preview Card */}
           <div className="relative animate-fade-up animation-delay-100">
             {/* Main Preview Card */}
             <div className="relative group perspective">
-              <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-6 border border-[#d4e4c8]/60 hover:shadow-3xl hover:-translate-y-2 hover:rotate-1 transition-all duration-500 transform-gpu">
+              <div
+                className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-6 border ${user ? "border-[#8aa66e]" : "border-[#d4e4c8]/60"} hover:shadow-3xl hover:-translate-y-2 hover:rotate-1 transition-all duration-500 transform-gpu`}
+              >
                 {/* Card Header with animated dots */}
                 <div className="flex items-center space-x-2 mb-6">
                   <div className="flex space-x-1.5">
@@ -209,17 +316,21 @@ export default function Home() {
                     <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse animation-delay-400"></div>
                   </div>
                   <span className="text-sm text-gray-400 ml-2 font-mono">
-                    lifemap.app/dashboard
+                    {user
+                      ? `${getUserName()}'s journey`
+                      : "lifemap.app/dashboard"}
                   </span>
 
                   {/* Live indicator */}
                   <div className="ml-auto flex items-center space-x-1">
-                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span
+                      className={`w-2 h-2 ${user ? "bg-green-500" : "bg-green-400"} rounded-full animate-pulse`}
+                    ></span>
                     <span className="text-xs text-gray-400">Live</span>
                   </div>
                 </div>
 
-                {/* Progress Visualization */}
+                {/* Progress Visualization - same as before */}
                 <div className="space-y-6">
                   {/* Career Progress */}
                   <div className="group/item cursor-pointer">
@@ -328,8 +439,12 @@ export default function Home() {
                   <SparklesIcon className="w-5 h-5 text-[#6b8e23]" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400">Reflection Streak</p>
-                  <p className="text-lg font-bold text-[#6b8e23]">12 weeks</p>
+                  <p className="text-xs text-gray-400">
+                    {user ? "Your Streak" : "Reflection Streak"}
+                  </p>
+                  <p className="text-lg font-bold text-[#6b8e23]">
+                    {user ? "8 weeks" : "12 weeks"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -340,9 +455,11 @@ export default function Home() {
                   <ChartBarIcon className="w-5 h-5 text-[#6b8e23]" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400">Insights Gained</p>
+                  <p className="text-xs text-gray-400">
+                    {user ? "Your Insights" : "Insights Gained"}
+                  </p>
                   <p className="text-lg font-bold text-[#6b8e23]">
-                    24 patterns
+                    {user ? "12 patterns" : "24 patterns"}
                   </p>
                 </div>
               </div>
