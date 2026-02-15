@@ -23,12 +23,18 @@ export default function Home() {
   const { user, logOut, signInWithGoogle, loading } = useAuth();
 
   const startJourney = () => {
-    // 1. Pick a random question from the array
-    const questionKeys = Object.keys(questions);
-    const randomIndex = Math.floor(Math.random() * questionKeys.length);
-    const randomKey = questionKeys[randomIndex];
-    // 2. Navigate to /[id].tsx (e.g., /101)
-    router.push(`/question/${randomKey}`);
+    // Only start if logged in
+    if (user) {
+      // 1. Pick a random question from the array
+      const questionKeys = Object.keys(questions);
+      const randomIndex = Math.floor(Math.random() * questionKeys.length);
+      const randomKey = questionKeys[randomIndex];
+      // 2. Navigate to /[id].tsx (e.g., /101)
+      router.push(`/question/${randomKey}`);
+    } else {
+      signInWithGoogle();
+    }
+
   };
 
   const handleLogout = async () => {
