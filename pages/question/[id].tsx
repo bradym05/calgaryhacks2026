@@ -31,7 +31,7 @@ export default function QuestionPage({ params }: PageProps) {
             // Check if id is a valid string
             if (typeof router.query.id == "string") {
                 setQuestionId(router.query.id)
-                setQuestion(questions[router.query.id as string])
+                setQuestion(questions[router.query.id])
             }
         }
     }, [router.isReady]);
