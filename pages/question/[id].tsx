@@ -89,8 +89,13 @@ export default function QuestionPage({ params }: PageProps) {
           setShowInsights(true);
         } else {
           // Navigate to next question
-          const nextId = Number(questionId) + 1;
-          router.push(nextId.toString());
+          const nextId = getNextQuestionId(questionId || "101");
+          if (nextId === "101") {
+            // route back to main page if we've looped through all questions
+            router.push(`/`);
+            return;
+          }
+          router.push(`/question/${nextId}`);
         }
       } catch (error) {
         console.error("Error submitting response: ", error);
@@ -132,7 +137,10 @@ export default function QuestionPage({ params }: PageProps) {
         <div className="absolute top-4 left-4 md:top-6 md:left-6">
           <button
             type="button"
-            onClick={() => { setOpenedFromBack(true); setShowInsights(true); }}
+            onClick={() => {
+              setOpenedFromBack(true);
+              setShowInsights(true);
+            }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 backdrop-blur-sm border border-[#d4e4c8]/60 text-gray-700 hover:bg-white hover:border-[#8aa66e]/50 transition-all duration-200 shadow-sm hover:shadow group"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
