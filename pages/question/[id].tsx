@@ -52,18 +52,16 @@ export default function QuestionPage({ params }: PageProps) {
                 </header>
 
                 <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-                        {/* Create input component frome type */}
-                        {
-                            question.type == "freeForm" &&
-                            <FreeFormQuestion
-                                question={question.question}
-                                response={response}
-                                setResponse={setResponse}
-                            />
-                        }
-                    <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-6 text-sm text-gray-600">
-                        Your answer field will go here.
-                    </div>
+                    {/* Create input component frome type */}
+                    {
+                        question.type == "freeForm" &&
+                        <FreeFormQuestion
+                            question={question.question}
+                            response={response}
+                            setResponse={setResponse}
+                        />
+                    }
+
 
                     <div className="mt-6 flex items-center justify-end gap-3">
                         {/* SKIP BUTTON */}
