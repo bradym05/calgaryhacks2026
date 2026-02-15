@@ -63,3 +63,61 @@ body {
     opacity: 0.4;
   }
 }
+
+/* Rating slider styles */
+.rating-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+}
+.rating-slider::-webkit-slider-runnable-track {
+  height: 12px;
+  border-radius: 9999px;
+}
+.rating-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  background: #3b82f6; 
+  border: 4px solid #3b82f6; 
+  box-shadow: 0 6px 18px rgba(59,130,246,0.22); 
+  margin-top: -12px; 
+  cursor: pointer; 
+  transition: transform 120ms ease, box-shadow 120ms ease; 
+}
+.rating-slider:focus::-webkit-slider-thumb {
+  transform: scale(1.08);
+  box-shadow: 0 10px 24px rgba(59,130,246,0.28);
+}
+.rating-slider::-moz-range-track {
+  height: 12px;
+  border-radius: 9999px;
+}
+.rating-slider::-moz-range-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  background: #3b82f6;
+  border: 4px solid #3b82f6;
+  box-shadow: 0 6px 18px rgba(59,130,246,0.22);
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.rating-slider:focus::-moz-range-thumb {
+  transform: scale(1.08);
+  box-shadow: 0 10px 24px rgba(59,130,246,0.28);
+}
+
+/* Dark-mode adjustments: make border contrast against dark background */
+@media (prefers-color-scheme: dark) {
+  .rating-slider::-webkit-slider-thumb {
+    border: 4px solid #60a5fa; 
+    background: #60a5fa; 
+  }
+  .rating-slider::-moz-range-thumb {
+    border: 4px solid #60a5fa; 
+    background: #60a5fa; 
+  }
+}
