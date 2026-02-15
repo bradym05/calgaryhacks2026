@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import questions from "../services/questions.json";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   const router = useRouter();
@@ -31,7 +32,11 @@ export default function Home() {
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-gradient-to-r from-[#8aa66e] to-[#a8c686] rounded-lg"></div>
           <span className="text-xl font-bold bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] bg-clip-text text-transparent">
-            LifeMap
+            <Link 
+              href="/"
+              >
+              LifeMap
+            </Link>
           </span>
         </div>
         <div className="flex items-center space-x-4">
@@ -480,33 +485,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[#d4e4c8] bg-[#f8f4ed]/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center space-x-2 mb-4 md:mb-0">
-              <div className="w-6 h-6 bg-gradient-to-r from-[#8aa66e] to-[#a8c686] rounded"></div>
-              <span className="font-semibold text-gray-800">LifeMap</span>
-            </div>
-            <div className="flex space-x-6 text-sm text-gray-600">
-              <Link href="/about" className="hover:text-gray-900">
-                About
-              </Link>
-              <Link href="/privacy" className="hover:text-gray-900">
-                Privacy
-              </Link>
-              <Link href="/terms" className="hover:text-gray-900">
-                Terms
-              </Link>
-              <Link href="/contact" className="hover:text-gray-900">
-                Contact
-              </Link>
-            </div>
-            <p className="text-sm text-gray-500 mt-4 md:mt-0">
-              © 2026 LifeMap. Made for Calgary Hacks.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
