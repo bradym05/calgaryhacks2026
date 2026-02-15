@@ -13,6 +13,8 @@ import FreeFormQuestion from "@/components/FreeFormQuestion";
 import BooleanQuestion from "@/components/BooleanQuestion";
 import AnswerDisplay from "@/components/answerDisplay";
 import { addResponseToQuestion } from "@/services/addNewAnswer";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -91,6 +93,17 @@ export default function QuestionPage({ params }: PageProps) {
   return (
     question && (
       <main className="min-h-screen bg-gradient-to-br from-[#f5f0e6] via-[#f8f4ed] to-[#e8f0e2]">
+        {/* Back button */}
+        <div className="absolute top-4 left-4 md:top-6 md:left-6">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 backdrop-blur-sm border border-[#d4e4c8]/60 text-gray-700 hover:bg-white hover:border-[#8aa66e]/50 transition-all duration-200 shadow-sm hover:shadow group"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+            <span className="text-sm font-medium">Back to Home</span>
+          </Link>
+        </div>
+
         <div className="mx-auto max-w-3xl px-5 py-12 md:py-16">
           <header className="mb-10 text-center md:text-left">
             {/* Question ID */}
@@ -150,7 +163,7 @@ export default function QuestionPage({ params }: PageProps) {
                 {/* SKIP BUTTON */}
                 <button
                   type="button"
-                  className="w-full sm:w-auto px-7 py-3 rounded-xl border border-gray-300 bg-white/90 text-gray-700 font-medium hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+                  className="w-full sm:w-auto px-7 py-3 rounded-xl border cursor-pointer border-gray-300 bg-white/90 text-gray-700 font-medium hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
                   onClick={handleSkip}
                 >
                   Skip for now
@@ -159,11 +172,12 @@ export default function QuestionPage({ params }: PageProps) {
                 {/* SUBMIT BUTTON */}
                 <button
                   type="submit"
-                  className={`w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#8aa66e]/50 focus:ring-offset-2 ${
-                    submitting || response.length === 0
-                      ? "bg-gray-300 text-gray-500 cursor-not-allowed hover:shadow-md opacity-70"
-                      : "bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white hover:shadow-lg hover:opacity-95"
-                  }`}
+                  className={`w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#8aa66e]/50 focus:ring-offset-2
+  ${
+    submitting || response.length === 0
+      ? "bg-gray-300 text-gray-500 cursor-not-allowed hover:shadow-md opacity-70"
+      : "bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white hover:shadow-lg hover:opacity-95 cursor-pointer"
+  }`}
                   disabled={submitting || response.length === 0}
                 >
                   {submitting ? "Submitting..." : "Save & Continue"}
