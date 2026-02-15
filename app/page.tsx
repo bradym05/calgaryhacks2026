@@ -33,11 +33,7 @@ export default function Home() {
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-gradient-to-r from-[#8aa66e] to-[#a8c686] rounded-lg"></div>
           <span className="text-xl font-bold bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] bg-clip-text text-transparent">
-            <Link
-              href="/"
-            >
-              LifeMap
-            </Link>
+            <Link href="/">LifeMap</Link>
           </span>
         </div>
         <div className="flex items-center space-x-4">
@@ -55,19 +51,6 @@ export default function Home() {
           </Link>
         </div>
       </nav>
-
-      <LifeMapTrendGraph
-        title="Career Alignment Trend"
-        subtitle="See how your career clarity changes each quarter"
-        valueLabel="Career Alignment"
-        valueSuffix="%"
-        data={[
-          { date: "2025-05-01", value: 52 },
-          { date: "2025-08-01", value: 58 },
-          { date: "2025-11-01", value: 61 },
-          { date: "2026-02-01", value: 75 },
-        ]}
-      />
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center px-6 py-16 md:py-24 max-w-7xl mx-auto overflow-hidden">
         {/* Animated background with parallax effect */}
