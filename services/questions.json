@@ -1,74 +1,63 @@
-[
-  {
-    "id": 101,
+
+{
+  "101": {
     "theme": "Career",
     "question": "On a scale of 1-10, how satisfied are you with your current work-life balance?",
     "type": "rating"
   },
-  {
-    "id": 102,
+  "102": {
     "theme": "Wellness",
     "question": "How would you rate your overall physical energy levels lately?",
     "type": "rating"
   },
-  {
-    "id": 103,
+  "103": {
     "theme": "Personal Growth",
     "question": "Rate your level of optimism regarding your future goals for the next year.",
     "type": "rating"
   },
-  {
-    "id": 104,
+  "104": {
     "theme": "Values",
     "question": "How much do you feel your daily actions align with your personal values?",
     "type": "rating"
   },
-  {
-    "id": 201,
+  "201": {
     "theme": "Challenges",
     "question": "What is the biggest challenge you are currently facing?",
     "type": "freeForm"
   },
-  {
-    "id": 202,
+  "202": {
     "theme": "Future",
     "question": "Describe your ideal day-to-day life three years from now.",
     "type": "freeForm"
   },
-  {
-    "id": 203,
+  "203": {
     "theme": "Habits",
     "question": "What is a new habit or skill you have been trying to cultivate?",
     "type": "freeForm"
   },
-  {
-    "id": 204,
+  "204": {
     "theme": "Social",
     "question": "If you could change one thing about your current social circle, what would it be?",
     "type": "freeForm"
   },
-  {
-    "id": 301,
+  "301": {
     "theme": "Environment",
     "question": "Do you feel like you are currently living in the city or environment that best suits you?",
     "type": "trueOrFalse"
   },
-  {
-    "id": 302,
+  "302": {
     "theme": "Leisure",
     "question": "Are you currently satisfied with the amount of time you spend on your hobbies?",
     "type": "trueOrFalse"
   },
-  {
-    "id": 303,
+  "303": {
     "theme": "Mindset",
     "question": "Do you feel more confident today than you did three months ago?",
     "type": "trueOrFalse"
   },
-  {
-    "id": 304,
+  "304": {
     "theme": "Career",
     "question": "Are you currently pursuing a major career or lifestyle change?",
     "type": "trueOrFalse"
   }
-]
+}
