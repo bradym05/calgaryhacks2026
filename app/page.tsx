@@ -58,6 +58,9 @@ export default function Home() {
                 <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition" />
               </Link>
             </div>
+            <p className="text-sm text-gray-500">
+              ✨ Free forever • No credit card required • 3-4 month check-ins
+            </p>
           </div>
           <div className="relative">
             {/* Preview Image/Graphic */}
