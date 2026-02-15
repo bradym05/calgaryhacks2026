@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from "react"
 
 export type Question = {
-    id : number,
     question : string,
-    type : string
+    type : string,
+    theme : string
 }
 
 export type QuestionProps = {
