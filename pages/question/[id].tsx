@@ -10,6 +10,7 @@ import { Question } from "@/types/questions";
 import questions from "@/services/questions.json";
 import FreeFormQuestion from "@/components/FreeFormQuestion";
 
+
 type PageProps = {
   params: Promise<{ id: string }>;
 };
