@@ -139,23 +139,7 @@ export default function Home() {
             </div>
 
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10 w-full">
-              {/* Left Content */}
               <div className="space-y-8 animate-fade-up">
-                {/* Personalized Welcome Badge */}
-                <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-[#d4e4c8] shadow-sm animate-fade-up">
-                  <span
-                    className={`w-2 h-2 ${user ? "bg-green-500" : "bg-[#6b8e23]"} rounded-full animate-pulse mr-2`}
-                  ></span>
-                  <span className="text-sm font-medium text-[#556b2f]">
-                    {user ? (
-                      <>✨ Welcome back, {getUserName()}! Ready to reflect?</>
-                    ) : (
-                      <>✨ New: 3-4 Month Check-ins</>
-                    )}
-                  </span>
-                </div>
-
-                {/* Main Heading - Personalized */}
                 <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
                   <>
                     <span className="text-gray-800">Map Your</span>
