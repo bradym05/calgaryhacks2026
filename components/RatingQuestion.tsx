@@ -36,9 +36,13 @@ const RatingQuestion = ({ onChange, questionInfo }) => {
 
           <div className="mt-4">
             <span className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-              {sliderValue}
+              {sliderValue + " out of 10"}
             </span>
           </div>
+
+          <button className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded mt-6 transition-colors duration-200">
+            Submit
+          </button>
         </div>
       </div>
     </div>
