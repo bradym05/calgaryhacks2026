@@ -8,6 +8,7 @@ export const addResponseToQuestion = async (
 ) => {
   responseValue = btoa(responseValue); // Base64 Encoding
   responseValue += ":" + new Date().toISOString().split("T")[0]; // Add :YYYY-MM-DD
+
   try {
     console.log("db:", db);
 

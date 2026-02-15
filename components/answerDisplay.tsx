@@ -3,6 +3,7 @@ import { db } from "../services/firebase";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore/lite";
 import { addResponseToQuestion } from "@/services/addNewAnswer";
 import { fetchAnswers } from "@/services/getAnswers";
+import { useAuth } from "@/services/AuthContext";
 
 type AnswerDisplayProps = {
   questionId: string;
@@ -12,15 +13,16 @@ export default function AnswerDisplay({ questionId }: AnswerDisplayProps) {
   const [answers, setAnswers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const { user } = useAuth();
 
-    fetchAnswers(questionId).then(({success, decodedSortedAnswers}) => {
+  useEffect(() => {
+    fetchAnswers(questionId, user?.uid || "default").then(({ success, decodedSortedAnswers }) => {
       if (decodedSortedAnswers && success) {
-        setAnswers(decodedSortedAnswers)
+        setAnswers(decodedSortedAnswers);
       }
     });
 
-    setLoading(false)
+    setLoading(false);
   }, [questionId]); // Add questionId as a dependency
 
   if (loading) return <p>Loading answers...</p>;
