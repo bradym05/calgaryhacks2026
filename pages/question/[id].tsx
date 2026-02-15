@@ -54,7 +54,7 @@ export default function QuestionPage({ params }: PageProps) {
   // Handle submission
   async function onSubmit(e: SubmitEvent) {
     // Don't refresh
-    e.preventDefault()
+    e.preventDefault();
     // Update state
     setSubmitting(true);
     // Validate response
@@ -63,7 +63,7 @@ export default function QuestionPage({ params }: PageProps) {
       setSubmitting(true);
       try {
         await addResponseToQuestion(
-          (await params).userId,
+          user?.uid || "default",
           questionId || "default",
           response.trim(),
         );
@@ -73,7 +73,6 @@ export default function QuestionPage({ params }: PageProps) {
         router.push(nextId.toString());
       } catch (error) {
         console.error("Error submitting response: ", error);
-      } finally {
       } finally {
         setSubmitting(false);
       }
