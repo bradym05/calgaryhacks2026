@@ -55,14 +55,19 @@ export default function Register() {
                   LifeMap
                 </span>
               </div>
-              <h1 className="text-3xl font-bold text-gray-800 mb-2">Create Account</h1>
+              <h1 className="text-3xl font-bold text-gray-800 mb-2">
+                Create Account
+              </h1>
               <p className="text-gray-600">Start your personal journey today</p>
             </div>
 
             {/* Register Form */}
             <form onSubmit={handleRegister} className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Full Name
                 </label>
                 <input
@@ -78,7 +83,10 @@ export default function Register() {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Email Address
                 </label>
                 <input
@@ -94,7 +102,10 @@ export default function Register() {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Password
                 </label>
                 <input
@@ -110,7 +121,10 @@ export default function Register() {
               </div>
 
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Confirm Password
                 </label>
                 <input
@@ -137,11 +151,17 @@ export default function Register() {
                 />
                 <label htmlFor="terms" className="ml-2 text-sm text-gray-700">
                   I agree to the{" "}
-                  <Link href="/terms" className="text-[#8aa66e] hover:text-[#6b8e23] font-medium">
+                  <Link
+                    href="/terms"
+                    className="text-[#8aa66e] hover:text-[#6b8e23] font-medium"
+                  >
                     Terms of Service
                   </Link>
                   {" and "}
-                  <Link href="/privacy" className="text-[#8aa66e] hover:text-[#6b8e23] font-medium">
+                  <Link
+                    href="/privacy"
+                    className="text-[#8aa66e] hover:text-[#6b8e23] font-medium"
+                  >
                     Privacy Policy
                   </Link>
                 </label>
@@ -162,7 +182,9 @@ export default function Register() {
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Already have an account?</span>
+                <span className="px-2 bg-white text-gray-500">
+                  Already have an account?
+                </span>
               </div>
             </div>
 
