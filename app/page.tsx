@@ -15,9 +15,13 @@ export default function Home() {
   const router = useRouter();
 
   const startJourney = () => {
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    const randomQuestion = questions[randomIndex];
-    router.push(`/question/${randomQuestion.id}`);
+    // 1. Pick a random question from the array
+    const questionKeys = Object.keys(questions);
+    const randomIndex = Math.floor(Math.random() * questionKeys.length);
+    const randomKey = questionKeys[randomIndex];
+
+    // 2. Navigate to /[id].tsx (e.g., /101)
+    router.push(`/question/${randomKey}`);
   };
 
   return (
