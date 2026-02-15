@@ -6,7 +6,7 @@ import type { QuestionProps } from "@/types/questions"
 const RatingQuestion = ({question, response, setResponse}: QuestionProps) => {
   const [sliderValue, setSliderValue] = useState(5);
 
-  const handleSliderChange = (e) => {
+  const handleSliderChange = (e : React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value);
     setSliderValue(newValue);
     setResponse && setResponse(newValue.toString());

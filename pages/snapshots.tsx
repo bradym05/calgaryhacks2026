@@ -203,15 +203,11 @@ export default function SnapshotPage() {
                             <DatePicker
                                 label="Start date"
                                 value={start}
-                                min={minDate}
-                                max={maxDate}
                                 onChange={(e) => setStart(e.target.value)}
                             />
                             <DatePicker
                                 label="End date"
                                 value={end}
-                                min={minDate}
-                                max={maxDate}
                                 onChange={(e) => setEnd(e.target.value)}
                             />
                         </div>
