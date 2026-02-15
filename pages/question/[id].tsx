@@ -1,17 +1,25 @@
+"use client";
 // app/questions/[id]/page.tsx
 // Simple question page template (no input/answer fields), Next.js App Router + TailwindCSS
+
+import FreeFormQuestion from "@/components/FreeFormQuestion";
+import { Question } from "@/types/questions";
+import { useState } from "react";
 
 type PageProps = {
     params: { id: string };
 };
 
 export default function QuestionPage({ params }: PageProps) {
+
+    // Store question response
+    const [response, setResponse] = useState(""); // Pass set response to question component
+
     // In a real app, you’d fetch the question by params.id
-    const question = {
-        id: params.id,
-        title: "Question",
-        prompt: "What’s one habit you’re proud of maintaining this year?",
-        helperText: "Answer honestly—your response is private unless you choose to share it later.",
+    const question: Question = {
+        id: 1,
+        question: "Where do you live?",
+        type: "freeForm"
     };
 
     return (
@@ -19,17 +27,21 @@ export default function QuestionPage({ params }: PageProps) {
             <div className="mx-auto max-w-2xl px-4 py-10">
                 <header className="mb-8">
                     <p className="text-sm font-medium text-gray-500">
-                        {question.title} • #{question.id}
+                        • #{question.id}
                     </p>
                     <h1 className="mt-2 text-2xl font-semibold tracking-tight text-gray-900">
-                        {question.prompt}
+                        {question.question}
                     </h1>
-                    <p className="mt-2 text-sm text-gray-600">{question.helperText}</p>
+                    <p className="mt-2 text-sm text-gray-600">Remember to answer honestly</p>
                 </header>
 
                 <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                     <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-6 text-sm text-gray-600">
-                        Your answer field will go here.
+                        <FreeFormQuestion
+                            question={question.question}
+                            response={response}
+                            setResponse={setResponse}
+                        />
                     </div>
 
                     <div className="mt-6 flex items-center justify-end gap-3">
