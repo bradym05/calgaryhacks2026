@@ -6,6 +6,8 @@ export const addResponseToQuestion = async (
   questionId: string,
   responseValue: string,
 ) => {
+  responseValue = btoa(responseValue); // Base64 Encoding
+  responseValue += ":" + new Date().toISOString().split("T")[0]; // Add :YYYY-MM-DD
   try {
     const docRef = doc(db, userId, questionId);
     const docSnap = await getDoc(docRef);

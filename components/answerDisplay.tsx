@@ -26,7 +26,13 @@ export default function AnswerDisplay({ questionId }: AnswerDisplayProps) {
             .sort((a, b) => Number(a) - Number(b)) // Ensure numeric order
             .map((key) => data[key]);
 
-          setAnswers(sortedAnswers);
+          // Base64 decode the answers, but not the date part
+          const decodedSortedAnswers = sortedAnswers.map((item) => {
+            const [encodedResponse, date] = item.split(":");
+            const decodedResponse = atob(encodedResponse);
+            return `${decodedResponse}:${date}`;
+          });
+          setAnswers(decodedSortedAnswers);
         } else {
           console.log("No such document!");
         }
