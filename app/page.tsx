@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/services/AuthContext";
 import questions from "../services/questions.json";
 import Footer from "@/components/Footer";
+import LifeMapTrendGraph from "@/components/GraphDisplay";
 
 export default function Home() {
   const router = useRouter();
@@ -78,6 +79,18 @@ export default function Home() {
         </div>
       </nav>
 
+      <LifeMapTrendGraph
+        title="Career Alignment Trend"
+        subtitle="See how your career clarity changes each quarter"
+        valueLabel="Career Alignment"
+        valueSuffix="%"
+        data={[
+          { date: "2025-05-01", value: 52 },
+          { date: "2025-08-01", value: 58 },
+          { date: "2025-11-01", value: 61 },
+          { date: "2026-02-01", value: 75 },
+        ]}
+      />
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center px-6 py-16 md:py-24 max-w-7xl mx-auto overflow-hidden">
         {/* Animated background with parallax effect */}
