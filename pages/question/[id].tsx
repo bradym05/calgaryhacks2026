@@ -13,6 +13,7 @@ import FreeFormQuestion from "@/components/FreeFormQuestion";
 import BooleanQuestion from "@/components/BooleanQuestion";
 import AnswerDisplay from "@/components/answerDisplay";
 import { addResponseToQuestion } from "@/services/addNewAnswer";
+import { useAuth } from "@/services/AuthContext";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -21,6 +22,8 @@ type PageProps = {
 export default function QuestionPage({ params }: PageProps) {
   // Use a try/catch or a check to ensure params exists
   const router = useRouter();
+
+  const { user } = useAuth();
 
   // States
   const [response, setResponse] = useState("");
@@ -44,24 +47,29 @@ export default function QuestionPage({ params }: PageProps) {
   }, [router.isReady]);
 
   // Handle submission
-  async function onSubmit(e: SubmitEvent) {
+  async function onSubmit(e: FormEvent) {
     // Don't refresh
-    e.preventDefault()
+    e.preventDefault();
+
     // Update state
-    setSubmitting(true)
+    setSubmitting(true);
     // Validate response
     if (response.trim().length > 0) {
       // Add response to database
       setSubmitting(true);
-      try{
-        await addResponseToQuestion("user1", questionId || "default", response.trim());
+      try {
+        await addResponseToQuestion(
+          (await params).userId,
+          questionId || "default",
+          response.trim(),
+        );
         setResponse("");
         // Navigate to next question
         const nextId = Number(questionId) + 1;
         router.push(nextId.toString());
-      }catch(error){
+      } catch (error) {
         console.error("Error submitting response: ", error);
-      }finally{
+      } finally {
         setSubmitting(false);
       }
     }
@@ -84,8 +92,7 @@ export default function QuestionPage({ params }: PageProps) {
               Take your time • Be honest with yourself
             </p>
           </header>
-              <AnswerDisplay questionId={questionId || "default"} />
-
+          <AnswerDisplay questionId={questionId || "default"} />
 
           <section className="rounded-2xl md:rounded-3xl border border-[#d4e4c8]/60 bg-white/80 backdrop-blur-sm shadow-xl shadow-[#c4d9a8]/25 p-7 md:p-10">
             <form onSubmit={onSubmit}>
@@ -97,14 +104,13 @@ export default function QuestionPage({ params }: PageProps) {
                   setResponse={setResponse}
                 />
               )}
-              {
-                question.type == "trueOrFalse" && (
-                  <BooleanQuestion
-                    question={question.question}
-                    response={response}
-                    setResponse={setResponse}
-                  />
-                )}
+              {question.type == "trueOrFalse" && (
+                <BooleanQuestion
+                  question={question.question}
+                  response={response}
+                  setResponse={setResponse}
+                />
+              )}
               {question.type == "rating" && (
                 <RatingQuestion
                   question={question.question}
@@ -112,7 +118,6 @@ export default function QuestionPage({ params }: PageProps) {
                   setResponse={setResponse}
                 />
               )}
-              
 
               <div className="mt-8 flex flex-col sm:flex-row items-center justify-end gap-4">
                 {/* SKIP BUTTON */}
@@ -140,9 +145,7 @@ export default function QuestionPage({ params }: PageProps) {
             Tip: Your answers are private • You can review and update them later
             from your profile
           </footer>
-
         </div>
-
       </main>
     )
   );
