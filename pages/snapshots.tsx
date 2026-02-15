@@ -15,6 +15,7 @@ import DatePicker from "@/components/DatePicker";
 import questions from "@/services/questions.json";
 import { fetchAnswers } from "@/services/getAnswers";
 import BooleanDisplay from "@/components/BooleanDisplay";
+import FreeFormDisplay from "@/components/FreeFormDisplay";
 
 function toDate(d: string | Date) {
     return d instanceof Date ? d : new Date(d);
@@ -250,6 +251,23 @@ export default function SnapshotPage({startJourney}: {startJourney: () => void})
                         </span>
                         <span>applied to all graphs</span>
                     </div>
+                </div>
+
+                {/* Free Form */}
+                <div className="mt-10 space-y-10">
+                    {freeFormQuestions.map((q) => (
+                        <FreeFormDisplay
+                            key={q}
+                            title={q}
+                            data={answered
+                                .filter((a) => a.question == q)
+                                .map((a) => ({
+                                    date: a.date,
+                                    value: a.answer
+                                }))
+                            }
+                        />
+                    ))}
                 </div>
 
                 {/* Graphs */}
