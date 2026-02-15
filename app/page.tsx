@@ -90,7 +90,7 @@ export default function Home() {
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="text-gray-600 hover:text-gray-900 px-3 py-2 transition text-sm hover:bg-white/50 rounded-lg"
+                    className="text-gray-600 hover:text-gray-900 px-3 py-2  cursor-pointer transition text-sm hover:bg-white/50 rounded-lg"
                   >
                     Log out
                   </button>
@@ -98,7 +98,7 @@ export default function Home() {
               ) : (
                 <button
                   onClick={handleGoogleSignIn}
-                  className="bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white px-5 py-2 rounded-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
+                  className="bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white cursor-pointer px-5 py-2 rounded-lg hover:opacity-90 transition shadow-md hover:shadow-lg"
                 >
                   Sign in with Google
                 </button>
@@ -180,7 +180,7 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-fade-up animation-delay-200">
                   <button
                     onClick={startJourney}
-                    className="group relative bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] text-white px-8 py-4 rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:-translate-y-1"
+                    className="group relative bg-gradient-to-r from-[#6b8e23] to-[#8aa66e] cursor-pointer text-white px-8 py-4 rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:-translate-y-1"
                   >
                     <span className="relative z-10 flex items-center justify-center text-lg">
                       {user ? "Continue Reflecting" : "Start Your Journey"}
@@ -194,7 +194,7 @@ export default function Home() {
                         .getElementById(user ? "snapshots" : "how-it-works")
                         ?.scrollIntoView({ behavior: "smooth" })
                     }
-                    className="group relative bg-white/80 backdrop-blur-sm text-gray-700 px-8 py-4 rounded-xl font-semibold border-2 border-[#d4e4c8] hover:border-[#8aa66e] transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden"
+                    className="group relative bg-white/80 backdrop-blur-sm text-gray-700 px-8 py-4 rounded-xl font-semibold border-2 cursor-pointer border-[#d4e4c8] hover:border-[#8aa66e] transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden"
                   >
                     <span className="relative z-10 flex items-center justify-center text-lg">
                       {user ? "View Your Snapshot" : "See How It Works"}
@@ -578,7 +578,7 @@ export default function Home() {
               </p>
               <button
                 onClick={handleGoogleSignIn}
-                className="bg-gradient-to-r from-[#8aa66e] to-[#a8c686] text-white px-8 py-4 rounded-lg font-semibold hover:opacity-90 transition shadow-lg hover:shadow-xl inline-flex items-center group text-lg"
+                className="bg-gradient-to-r from-[#8aa66e] cursor-pointer to-[#a8c686] text-white px-8 py-4 rounded-lg font-semibold hover:opacity-90 transition shadow-lg hover:shadow-xl inline-flex items-center group text-lg"
               >
                 Create Your Life Map
                 <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition" />

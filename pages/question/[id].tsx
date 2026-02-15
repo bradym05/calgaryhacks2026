@@ -141,7 +141,7 @@ export default function QuestionPage({ params }: PageProps) {
               setOpenedFromBack(true);
               setShowInsights(true);
             }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 backdrop-blur-sm border border-[#d4e4c8]/60 text-gray-700 hover:bg-white hover:border-[#8aa66e]/50 transition-all duration-200 shadow-sm hover:shadow group"
+            className="inline-flex items-center gap-2 px-4 py-2 cursor-pointer rounded-xl bg-white/80 backdrop-blur-sm border border-[#d4e4c8]/60 text-gray-700 hover:bg-white hover:border-[#8aa66e]/50 transition-all duration-200 shadow-sm hover:shadow group"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
             <span className="text-sm font-medium">Back to Home</span>
@@ -166,7 +166,7 @@ export default function QuestionPage({ params }: PageProps) {
             <button
               type="button"
               onClick={() => setShowHistory((s) => !s)}
-              className="inline-flex items-center px-3 py-1.5 rounded-full bg-[#e8f0e2] text-[#556b2f] text-sm font-medium border border-[#d4e4c8]/70 hover:bg-[#e0ead0]"
+              className="inline-flex items-center px-3 py-1.5 rounded-full cursor-pointer bg-[#e8f0e2] text-[#556b2f] text-sm font-medium border border-[#d4e4c8]/70 hover:bg-[#e0ead0]"
             >
               {showHistory ? "Hide history" : "Show history"}
             </button>
