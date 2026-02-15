@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   ArrowRightIcon,
@@ -6,8 +8,21 @@ import {
   ClockIcon,
   ShieldCheckIcon,
 } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
+import questions from "../services/questions.json";
 
 export default function Home() {
+  const router = useRouter();
+
+  const startJourney = () => {
+    // 1. Pick a random question from the array
+    const randomIndex = Math.floor(Math.random() * questions.length);
+    const randomQuestion = questions[randomIndex];
+
+    // 2. Navigate to /[id].tsx (e.g., /101)
+    router.push(`/question/${randomQuestion.id}`);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Navigation */}
@@ -50,17 +65,14 @@ export default function Home() {
               evolve through regular check-ins.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/register"
-                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-lg font-semibold hover:opacity-90 transition shadow-lg hover:shadow-xl flex items-center justify-center group"
+              <button
+                onClick={startJourney}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition shadow-md hover:shadow-lg inline-flex items-center justify-center"
               >
                 Start Your Journey
-                <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition" />
-              </Link>
+                <ArrowRightIcon className="w-5 h-5 ml-2" />
+              </button>
             </div>
-            <p className="text-sm text-gray-500">
-              ✨ Free forever • No credit card required • 3-4 month check-ins
-            </p>
           </div>
           <div className="relative">
             {/* Preview Image/Graphic */}

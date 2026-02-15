@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+
+    "heroicons": "^2.2.0",
+ 
     "newsapi": "^2.4.1",
     "next": "16.1.6",
     "react": "19.2.3",
