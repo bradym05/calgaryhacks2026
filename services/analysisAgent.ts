@@ -1,10 +1,11 @@
+"use client";
+
 import OpenAI from "openai";
 import { Question } from "@/types/questions";
 import { ResponseInput } from "openai/resources/responses/responses.mjs";
 
 
-const client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY})
+const client = new OpenAI()
 
 // Free  form answer data
 export type FreeFormPoint = {
